@@ -145,7 +145,7 @@
 &lt;p&gt;模型在长rna序列（100+nts）的时候性能会下降，虽然recovery保持良好但是二级结构自洽性得分SC Score呈现明显线性下降。&lt;/p&gt;
 &lt;div align=center&gt;&lt;img src=&#34;6.png&#34; width=600/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;四个参数直观对比&lt;/font&gt;&lt;/center&gt;
-&lt;div align=center&gt;&lt;img src=&#34;4.png&#34; width=400/&gt;&lt;img src=&#34;5.png&#34; width=400/&gt;&lt;/div&gt;
+&lt;div align=center&gt;&lt;img src=&#34;4.png&#34; width=300/&gt;&lt;img src=&#34;5.png&#34; width=300/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;SC Score(左)与Recovery(右)随Sequence的变化&lt;/font&gt;&lt;/center&gt;
 &lt;h3 id=&#34;另一个生成范式ribodiffusion&#34;&gt;另一个生成范式：RiboDiffusion
 &lt;/h3&gt;&lt;p&gt;至于RiboDiffusion，其他部署方式一致但是环境设置如下：&lt;/p&gt;
@@ -186,7 +186,7 @@
 &lt;/div&gt;&lt;p&gt;根据脚本运行，输出会出现一些问题，例如：&lt;/p&gt;
 &lt;div align=center&gt;&lt;img src=&#34;7.png&#34; width=400/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;RiboDiffusion输出&lt;/font&gt;&lt;/center&gt;
-&lt;div align=center&gt;&lt;img src=&#34;8.png&#34; width=400/&gt;&lt;img src=&#34;9.png&#34; width=400/&gt;&lt;/div&gt;
+&lt;div align=center&gt;&lt;img src=&#34;8.png&#34; width=300/&gt;&lt;img src=&#34;9.png&#34; width=300/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;RiboDiffusion模型的Recovery在对数坐标(左)与常数坐标(右)表示下随Sequence的变化&lt;/font&gt;&lt;/center&gt;
 </description>
         </item>
