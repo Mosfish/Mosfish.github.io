@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>5GC on Mosfish&#39;s Blog</title>
-        <link>http://localhost:1313/categories/5gc/</link>
+        <link>https://mosfish.github.io/categories/5gc/</link>
         <description>Recent content in 5GC on Mosfish&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Xiangyu Wen</copyright>
-        <lastBuildDate>Fri, 23 May 2025 12:45:04 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/5gc/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 23 May 2025 12:45:04 +0800</lastBuildDate><atom:link href="https://mosfish.github.io/categories/5gc/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>5G核心网部署及测试手册</title>
-        <link>http://localhost:1313/p/5g%E6%A0%B8%E5%BF%83%E7%BD%91%E9%83%A8%E7%BD%B2%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%89%8B%E5%86%8C/</link>
+        <link>https://mosfish.github.io/p/5g%E6%A0%B8%E5%BF%83%E7%BD%91%E9%83%A8%E7%BD%B2%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%89%8B%E5%86%8C/</link>
         <pubDate>Fri, 23 May 2025 12:45:04 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/5g%E6%A0%B8%E5%BF%83%E7%BD%91%E9%83%A8%E7%BD%B2%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%89%8B%E5%86%8C/</guid>
+        <guid>https://mosfish.github.io/p/5g%E6%A0%B8%E5%BF%83%E7%BD%91%E9%83%A8%E7%BD%B2%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%89%8B%E5%86%8C/</guid>
         <description>&lt;h1 id=&#34;free5gc核心网部署与接入测试手册&#34;&gt;Free5GC核心网部署与接入测试手册
 &lt;/h1&gt;&lt;div align=center&gt;&lt;img src=&#34;11111.png&#34; width=300/&gt;&lt;/div&gt;
 &lt;p&gt;&lt;font size=4 color=&#34;red&#34;&gt; &lt;strong&gt;写在开篇&lt;/strong&gt;：&lt;/font&gt;&lt;font size=4 color=&#34;red&#34;&gt; 建议养成&lt;strong&gt;备份&lt;/strong&gt;（例如git工具）的好习惯。本文包含Linux开发基础内容、free5gc核心网&lt;/font&gt;&lt;/p&gt;

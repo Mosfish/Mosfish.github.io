@@ -2,42 +2,42 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Categories on Mosfish&#39;s Blog</title>
-        <link>http://localhost:1313/categories/</link>
+        <link>https://mosfish.github.io/categories/</link>
         <description>Recent content in Categories on Mosfish&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Xiangyu Wen</copyright>
-        <lastBuildDate>Fri, 23 May 2025 12:45:04 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 23 May 2025 12:45:04 +0800</lastBuildDate><atom:link href="https://mosfish.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>5GC</title>
-        <link>http://localhost:1313/categories/5gc/</link>
+        <link>https://mosfish.github.io/categories/5gc/</link>
         <pubDate>Fri, 23 May 2025 12:45:04 +0800</pubDate>
         
-        <guid>http://localhost:1313/categories/5gc/</guid>
-        <description>&lt;img src="http://localhost:1313/categories/5gc/thuu.png" alt="Featured image of post 5GC" /&gt;</description>
+        <guid>https://mosfish.github.io/categories/5gc/</guid>
+        <description>&lt;img src="https://mosfish.github.io/categories/5gc/thuu.png" alt="Featured image of post 5GC" /&gt;</description>
         </item>
         <item>
         <title>Technical Blogs</title>
-        <link>http://localhost:1313/categories/technical-blogs/</link>
+        <link>https://mosfish.github.io/categories/technical-blogs/</link>
         <pubDate>Fri, 23 May 2025 12:45:04 +0800</pubDate>
         
-        <guid>http://localhost:1313/categories/technical-blogs/</guid>
-        <description>&lt;img src="http://localhost:1313/categories/technical-blogs/ucl.png" alt="Featured image of post Technical Blogs" /&gt;</description>
+        <guid>https://mosfish.github.io/categories/technical-blogs/</guid>
+        <description>&lt;img src="https://mosfish.github.io/categories/technical-blogs/ucl.png" alt="Featured image of post Technical Blogs" /&gt;</description>
         </item>
         <item>
         <title>Life</title>
-        <link>http://localhost:1313/categories/life/</link>
+        <link>https://mosfish.github.io/categories/life/</link>
         <pubDate>Wed, 12 Mar 2025 18:51:10 +0800</pubDate>
         
-        <guid>http://localhost:1313/categories/life/</guid>
-        <description>&lt;img src="http://localhost:1313/categories/life/life.jpg" alt="Featured image of post Life" /&gt;</description>
+        <guid>https://mosfish.github.io/categories/life/</guid>
+        <description>&lt;img src="https://mosfish.github.io/categories/life/life.jpg" alt="Featured image of post Life" /&gt;</description>
         </item>
         <item>
         <title>AI4S</title>
-        <link>http://localhost:1313/categories/ai4s/</link>
+        <link>https://mosfish.github.io/categories/ai4s/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/categories/ai4s/</guid>
-        <description>&lt;img src="http://localhost:1313/categories/ai4s/NC.png" alt="Featured image of post AI4S" /&gt;</description>
+        <guid>https://mosfish.github.io/categories/ai4s/</guid>
+        <description>&lt;img src="https://mosfish.github.io/categories/ai4s/NC.png" alt="Featured image of post AI4S" /&gt;</description>
         </item>
         
     </channel>

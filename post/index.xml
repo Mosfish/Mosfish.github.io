@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Posts on Mosfish&#39;s Blog</title>
-        <link>http://localhost:1313/post/</link>
+        <link>https://mosfish.github.io/post/</link>
         <description>Recent content in Posts on Mosfish&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Xiangyu Wen</copyright>
-        <lastBuildDate>Fri, 23 May 2025 12:45:04 +0800</lastBuildDate><atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 23 May 2025 12:45:04 +0800</lastBuildDate><atom:link href="https://mosfish.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>5G核心网部署及测试手册</title>
-        <link>http://localhost:1313/p/5g%E6%A0%B8%E5%BF%83%E7%BD%91%E9%83%A8%E7%BD%B2%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%89%8B%E5%86%8C/</link>
+        <link>https://mosfish.github.io/p/5g%E6%A0%B8%E5%BF%83%E7%BD%91%E9%83%A8%E7%BD%B2%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%89%8B%E5%86%8C/</link>
         <pubDate>Fri, 23 May 2025 12:45:04 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/5g%E6%A0%B8%E5%BF%83%E7%BD%91%E9%83%A8%E7%BD%B2%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%89%8B%E5%86%8C/</guid>
+        <guid>https://mosfish.github.io/p/5g%E6%A0%B8%E5%BF%83%E7%BD%91%E9%83%A8%E7%BD%B2%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%89%8B%E5%86%8C/</guid>
         <description>&lt;h1 id=&#34;free5gc核心网部署与接入测试手册&#34;&gt;Free5GC核心网部署与接入测试手册
 &lt;/h1&gt;&lt;div align=center&gt;&lt;img src=&#34;11111.png&#34; width=300/&gt;&lt;/div&gt;
 &lt;p&gt;&lt;font size=4 color=&#34;red&#34;&gt; &lt;strong&gt;写在开篇&lt;/strong&gt;：&lt;/font&gt;&lt;font size=4 color=&#34;red&#34;&gt; 建议养成&lt;strong&gt;备份&lt;/strong&gt;（例如git工具）的好习惯。本文包含Linux开发基础内容、free5gc核心网&lt;/font&gt;&lt;/p&gt;
@@ -1525,11 +1525,11 @@
         </item>
         <item>
         <title>Days in Tsinghua.</title>
-        <link>http://localhost:1313/p/days-in-tsinghua./</link>
+        <link>https://mosfish.github.io/p/days-in-tsinghua./</link>
         <pubDate>Wed, 12 Mar 2025 18:51:10 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/days-in-tsinghua./</guid>
-        <description>&lt;img src="http://localhost:1313/p/days-in-tsinghua./10.webp" alt="Featured image of post Days in Tsinghua." /&gt;&lt;h1 id=&#34;水木清华的深冬与初春&#34;&gt;水木清华的深冬与初春
+        <guid>https://mosfish.github.io/p/days-in-tsinghua./</guid>
+        <description>&lt;img src="https://mosfish.github.io/p/days-in-tsinghua./10.webp" alt="Featured image of post Days in Tsinghua." /&gt;&lt;h1 id=&#34;水木清华的深冬与初春&#34;&gt;水木清华的深冬与初春
 &lt;/h1&gt;&lt;blockquote&gt;
 &lt;p&gt;喜欢摄影，随快门声记录下那些难忘的时刻，一点一点凑成碎片，从流年中捞起那不变的永恒。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;记得刚到这里的时候，也才将将春节之后。京城的街道充满了三种氛围：&lt;strong&gt;节日的热闹，假期的冷清，外来旅客潮的繁忙&lt;/strong&gt;——巧了，我也是这众多旅人中的一员，听着火车站大哥亲切的京腔，似乎很久都没回家了，今年有幸在华北（家的地方），感受到了发自内心的愉悦与放松。&lt;/p&gt;
@@ -1581,11 +1581,11 @@
         </item>
         <item>
         <title>西安两三事</title>
-        <link>http://localhost:1313/p/%E8%A5%BF%E5%AE%89%E4%B8%A4%E4%B8%89%E4%BA%8B/</link>
+        <link>https://mosfish.github.io/p/%E8%A5%BF%E5%AE%89%E4%B8%A4%E4%B8%89%E4%BA%8B/</link>
         <pubDate>Tue, 17 Dec 2024 18:29:48 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/%E8%A5%BF%E5%AE%89%E4%B8%A4%E4%B8%89%E4%BA%8B/</guid>
-        <description>&lt;img src="http://localhost:1313/p/%E8%A5%BF%E5%AE%89%E4%B8%A4%E4%B8%89%E4%BA%8B/1.webp" alt="Featured image of post 西安两三事" /&gt;&lt;h1 id=&#34;突然告知要代表学院出差&#34;&gt;突然告知要代表学院出差
+        <guid>https://mosfish.github.io/p/%E8%A5%BF%E5%AE%89%E4%B8%A4%E4%B8%89%E4%BA%8B/</guid>
+        <description>&lt;img src="https://mosfish.github.io/p/%E8%A5%BF%E5%AE%89%E4%B8%A4%E4%B8%89%E4%BA%8B/1.webp" alt="Featured image of post 西安两三事" /&gt;&lt;h1 id=&#34;突然告知要代表学院出差&#34;&gt;突然告知要代表学院出差
 &lt;/h1&gt;&lt;p&gt;事情是这样的，突然接到通知让我和其他几位（我是某校级科创协会会长，其他一块的有类似学生会主席、研会主席、团副这种）去西安交流，于是我请了假、上了车，去了机场。一切是那么的突然，似乎没给我纠结的时间，但是我听到“出差补贴”四个字的时候直接蹦了起来，学生群体真好拿捏呀。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;出行前的轶事&lt;/strong&gt;：刚好DSP课点名了，我给李教授说请假了，结果教授说：&lt;/p&gt;
 &lt;blockquote&gt;

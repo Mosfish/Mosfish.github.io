@@ -2,47 +2,47 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://mosfish.github.io/</loc>
     <lastmod>2025-05-23T12:45:04+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/5gc/</loc>
+    <loc>https://mosfish.github.io/categories/5gc/</loc>
     <lastmod>2025-05-23T12:45:04+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/p/5g%E6%A0%B8%E5%BF%83%E7%BD%91%E9%83%A8%E7%BD%B2%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%89%8B%E5%86%8C/</loc>
+    <loc>https://mosfish.github.io/p/5g%E6%A0%B8%E5%BF%83%E7%BD%91%E9%83%A8%E7%BD%B2%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%89%8B%E5%86%8C/</loc>
     <lastmod>2025-05-23T12:45:04+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://mosfish.github.io/categories/</loc>
     <lastmod>2025-05-23T12:45:04+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/post/</loc>
+    <loc>https://mosfish.github.io/post/</loc>
     <lastmod>2025-05-23T12:45:04+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/technical-blogs/</loc>
+    <loc>https://mosfish.github.io/categories/technical-blogs/</loc>
     <lastmod>2025-05-23T12:45:04+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/p/days-in-tsinghua./</loc>
+    <loc>https://mosfish.github.io/p/days-in-tsinghua./</loc>
     <lastmod>2025-03-12T18:51:10+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/life/</loc>
+    <loc>https://mosfish.github.io/categories/life/</loc>
     <lastmod>2025-03-12T18:51:10+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/p/%E8%A5%BF%E5%AE%89%E4%B8%A4%E4%B8%89%E4%BA%8B/</loc>
+    <loc>https://mosfish.github.io/p/%E8%A5%BF%E5%AE%89%E4%B8%A4%E4%B8%89%E4%BA%8B/</loc>
     <lastmod>2024-12-17T18:29:48+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/page/</loc>
+    <loc>https://mosfish.github.io/page/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/archives/</loc>
+    <loc>https://mosfish.github.io/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/ai4s/</loc>
+    <loc>https://mosfish.github.io/categories/ai4s/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://mosfish.github.io/tags/</loc>
   </url><url>
-    <loc>http://localhost:1313/%E5%85%B3%E4%BA%8E-about/</loc>
+    <loc>https://mosfish.github.io/%E5%85%B3%E4%BA%8E-about/</loc>
   </url><url>
-    <loc>http://localhost:1313/%E6%8A%80%E6%9C%AF%E9%93%BE%E6%8E%A5friends-links/</loc>
+    <loc>https://mosfish.github.io/%E6%8A%80%E6%9C%AF%E9%93%BE%E6%8E%A5friends-links/</loc>
   </url><url>
-    <loc>http://localhost:1313/search/</loc>
+    <loc>https://mosfish.github.io/search/</loc>
   </url>
 </urlset>
