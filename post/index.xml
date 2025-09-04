@@ -165,8 +165,9 @@
 &lt;/div&gt;&lt;p&gt;根据脚本运行，输出会出现一些问题，例如：&lt;/p&gt;
 &lt;div align=center&gt;&lt;img src=&#34;7.png&#34; width=400/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;RiboDiffusion输出&lt;/font&gt;&lt;/center&gt;
-&lt;div align=center&gt;&lt;img src=&#34;8.png&#34; width=300/&gt;&lt;img src=&#34;9.png&#34; width=300/&gt;&lt;/div&gt;
-&lt;center&gt;&lt;font size=2&gt;RiboDiffusion模型的Recovery在对数坐标(左)与常数坐标(右)表示下随Sequence的变化&lt;/font&gt;&lt;/center&gt;
+&lt;div align=center&gt;&lt;img src=&#34;8.png&#34; width=400/&gt;&lt;/div&gt;
+&lt;div align=center&gt;&lt;img src=&#34;9.png&#34; width=400/&gt;&lt;/div&gt;
+&lt;center&gt;&lt;font size=2&gt;RiboDiffusion模型的Recovery在对数坐标(上)与常数坐标(下)表示下随Sequence的变化&lt;/font&gt;&lt;/center&gt;
 </description>
         </item>
         <item>
