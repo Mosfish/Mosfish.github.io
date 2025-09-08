@@ -7,15 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Xiangyu Wen</copyright>
-        <lastBuildDate>Mon, 08 Sep 2025 12:25:21 +0800</lastBuildDate><atom:link href="https://mosfish.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Life</title>
-        <link>https://mosfish.github.io/categories/life/</link>
-        <pubDate>Mon, 08 Sep 2025 12:25:21 +0800</pubDate>
-        
-        <guid>https://mosfish.github.io/categories/life/</guid>
-        <description>&lt;img src="https://mosfish.github.io/categories/life/life.jpg" alt="Featured image of post Life" /&gt;</description>
-        </item>
-        <item>
+        <lastBuildDate>Thu, 04 Sep 2025 15:36:23 +0800</lastBuildDate><atom:link href="https://mosfish.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>AI4S</title>
         <link>https://mosfish.github.io/categories/ai4s/</link>
         <pubDate>Thu, 04 Sep 2025 15:36:23 +0800</pubDate>
@@ -38,6 +30,14 @@
         
         <guid>https://mosfish.github.io/categories/technical-blogs/</guid>
         <description>&lt;img src="https://mosfish.github.io/categories/technical-blogs/ucl.png" alt="Featured image of post Technical Blogs" /&gt;</description>
+        </item>
+        <item>
+        <title>Life</title>
+        <link>https://mosfish.github.io/categories/life/</link>
+        <pubDate>Wed, 12 Mar 2025 10:52:03 +0800</pubDate>
+        
+        <guid>https://mosfish.github.io/categories/life/</guid>
+        <description>&lt;img src="https://mosfish.github.io/categories/life/life.jpg" alt="Featured image of post Life" /&gt;</description>
         </item>
         
     </channel>
