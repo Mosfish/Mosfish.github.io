@@ -3886,7 +3886,7 @@
 <div align=center><img src="16.png" width=600/></div>
 <center><font size=2>使用情况正常</font></center>
 <p>我随机抽取了500个datapoint后进行测试，保持全部的一致，控制变量，结果如图：</p>
-<div align=center><img src="mygrnade.png" width=600/><img src="mymultihead.png" width=600/><img src="multiscale.png" width=600/></div>
+<div align=center><img src="mygrnade.png" width=600/><img src="mymultihead.png" width=600/></div>
 <center><font size=2>实际情况看来，貌似有效果但不大</font></center>
 <p>因此我在考虑multi-scale attention的想法，根据论文<strong>Atlas: Multi-Scale Attention Improves Long Context Image Modeling</strong>的思路与AI的协助（实际上压力ai了），现在模型是如下这样，训练之后在进行测试。</p>
 <div class="highlight"><div class="chroma">
@@ -4817,7 +4817,8 @@
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">h_V</span><span class="p">,</span> <span class="n">h_E</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><div align=center><img src="multiscale.png" width=600/></div>
+</div><p>根据新的模型训练后进行测试比对，</p>
+<div align=center><img src="multiscale.png" width=600/></div>
 <center><font size=2>Multi-Scale Attention</font></center>
 <p>看起来有点作用不是吗？</p>
 <h3 id="测试multi-scale在数据集的效果">测试Multi-scale在数据集的效果

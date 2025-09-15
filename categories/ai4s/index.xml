@@ -3529,7 +3529,7 @@
 &lt;div align=center&gt;&lt;img src=&#34;16.png&#34; width=600/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;使用情况正常&lt;/font&gt;&lt;/center&gt;
 &lt;p&gt;我随机抽取了500个datapoint后进行测试，保持全部的一致，控制变量，结果如图：&lt;/p&gt;
-&lt;div align=center&gt;&lt;img src=&#34;mygrnade.png&#34; width=600/&gt;&lt;img src=&#34;mymultihead.png&#34; width=600/&gt;&lt;img src=&#34;multiscale.png&#34; width=600/&gt;&lt;/div&gt;
+&lt;div align=center&gt;&lt;img src=&#34;mygrnade.png&#34; width=600/&gt;&lt;img src=&#34;mymultihead.png&#34; width=600/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;实际情况看来，貌似有效果但不大&lt;/font&gt;&lt;/center&gt;
 &lt;p&gt;因此我在考虑multi-scale attention的想法，根据论文&lt;strong&gt;Atlas: Multi-Scale Attention Improves Long Context Image Modeling&lt;/strong&gt;的思路与AI的协助（实际上压力ai了），现在模型是如下这样，训练之后在进行测试。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -4460,7 +4460,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h_V&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h_E&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;div align=center&gt;&lt;img src=&#34;multiscale.png&#34; width=600/&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;根据新的模型训练后进行测试比对，&lt;/p&gt;
+&lt;div align=center&gt;&lt;img src=&#34;multiscale.png&#34; width=600/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;Multi-Scale Attention&lt;/font&gt;&lt;/center&gt;
 &lt;p&gt;看起来有点作用不是吗？&lt;/p&gt;
 &lt;h3 id=&#34;测试multi-scale在数据集的效果&#34;&gt;测试Multi-scale在数据集的效果
