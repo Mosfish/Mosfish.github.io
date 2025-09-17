@@ -544,6 +544,725 @@
 <div align=center><img src="8.png" width=400/></div>
 <div align=center><img src="9.png" width=400/></div>
 <center><font size=2>RiboDiffusion模型的Recovery在对数坐标(上)与常数坐标(下)表示下随Sequence的变化</font></center>
+<p>原始的启动脚本为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">diffusion</span> <span class="kn">import</span> <span class="n">NoiseScheduleVP</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sampling</span> <span class="kn">import</span> <span class="n">get_sampling_fn</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">du</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">functools</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">tree</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">configs.inference_ribodiffusion</span> <span class="kn">import</span> <span class="n">get_config</span>
+</span></span><span class="line"><span class="cl"><span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Choose heckpoint name</span>
+</span></span><span class="line"><span class="cl"><span class="n">checkpoint_path</span> <span class="o">=</span> <span class="s1">&#39;./ckpts/exp_inf.pth&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># checkpoint_path = &#39;./ckpts/exp_inf_large.pth&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">sampling_steps</span> <span class="o">=</span> <span class="mi">100</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># config.eval.sampling_steps = 100</span>
+</span></span><span class="line"><span class="cl"><span class="n">NUM_TO_LETTER</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_optimizer</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;&#34;&#34;Return a flax optimizer object based on `config`.&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">==</span> <span class="s1">&#39;Adam&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span> <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">beta1</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span> <span class="n">eps</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">weight_decay</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">==</span> <span class="s1">&#39;AdamW&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span> <span class="n">amsgrad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Optimizer </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">optimizer</span><span class="si">}</span><span class="s1"> not supported yet!&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">optimizer</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Initialize model</span>
+</span></span><span class="line"><span class="cl"><span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ema</span> <span class="o">=</span> <span class="n">ExponentialMovingAverage</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">decay</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ema_decay</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">params</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">optimizer</span> <span class="o">=</span> <span class="n">get_optimizer</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">state</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">ema</span><span class="o">=</span><span class="n">ema</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">model_size</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">20</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;model size: </span><span class="si">{:.1f}</span><span class="s1">MB&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_size</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Load checkpoint</span>
+</span></span><span class="line"><span class="cl"><span class="n">state</span> <span class="o">=</span> <span class="n">restore_checkpoint</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ema</span><span class="o">.</span><span class="n">copy_to</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Initialize noise scheduler</span>
+</span></span><span class="line"><span class="cl"><span class="n">noise_scheduler</span> <span class="o">=</span> <span class="n">NoiseScheduleVP</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">sde</span><span class="o">.</span><span class="n">schedule</span><span class="p">,</span> <span class="n">continuous_beta_0</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">sde</span><span class="o">.</span><span class="n">continuous_beta_0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                  <span class="n">continuous_beta_1</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">sde</span><span class="o">.</span><span class="n">continuous_beta_1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Obtain data scalar and inverse scalar</span>
+</span></span><span class="line"><span class="cl"><span class="n">inverse_scaler</span> <span class="o">=</span> <span class="n">get_data_inverse_scaler</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Setup sampling function</span>
+</span></span><span class="line"><span class="cl"><span class="n">test_sampling_fn</span> <span class="o">=</span> <span class="n">get_sampling_fn</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">noise_scheduler</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">sampling_steps</span><span class="p">,</span> <span class="n">inverse_scaler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">pdb2data</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">du</span><span class="o">.</span><span class="n">PDBtoData</span><span class="p">,</span> <span class="n">num_posenc</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">num_posenc</span><span class="p">,</span> <span class="n">num_rbf</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">num_rbf</span><span class="p">,</span> <span class="n">knn_num</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">knn_num</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Run inference on a single p</span>
+</span></span><span class="line"><span class="cl"><span class="n">pdb_file</span><span class="o">=</span> <span class="s1">&#39;/home/remote1/geometric-rna-design/data/raw/1FIR_1_A.pdb&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">pdb_id</span> <span class="o">=</span> <span class="n">pdb_file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.pdb&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">pdb_id</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pdb_id</span> <span class="o">=</span> <span class="n">pdb_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">dynamic_threshold</span><span class="o">=</span><span class="kc">True</span>
+</span></span><span class="line"><span class="cl"><span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">cond_scale</span><span class="o">=</span><span class="mf">0.4</span>
+</span></span><span class="line"><span class="cl"><span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">16</span>
+</span></span><span class="line"><span class="cl"><span class="n">test_sampling_fn</span> <span class="o">=</span> <span class="n">get_sampling_fn</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">noise_scheduler</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">sampling_steps</span><span class="p">,</span> <span class="n">inverse_scaler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">struct_data</span> <span class="o">=</span> <span class="n">pdb2data</span><span class="p">(</span><span class="n">pdb_file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">struct_data</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">map_structure</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">repeat_interleave</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">),</span> <span class="n">struct_data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">samples</span> <span class="o">=</span> <span class="n">test_sampling_fn</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">struct_data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;PDB ID: </span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">native_seq</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">NUM_TO_LETTER</span><span class="p">[</span><span class="n">struct_data</span><span class="p">[</span><span class="s1">&#39;seq&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]))</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Native sequence: </span><span class="si">{</span><span class="n">native_seq</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># native_seq = &#39;&#39;.join(list(NUM_TO_LETTER[struct_data[&#39;seq&#39;].squeeze(0).cpu().numpy()]))</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># print(f&#39;Native sequence: {native_seq}&#39;)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">designed_seq</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">NUM_TO_LETTER</span><span class="p">[</span><span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]))</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Generated sequence </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">designed_seq</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">recovery_</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">struct_data</span><span class="p">[</span><span class="s1">&#39;seq&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Recovery rate </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">recovery_</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>自动化设计为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span><span class="lnt">252
+</span><span class="lnt">253
+</span><span class="lnt">254
+</span><span class="lnt">255
+</span><span class="lnt">256
+</span><span class="lnt">257
+</span><span class="lnt">258
+</span><span class="lnt">259
+</span><span class="lnt">260
+</span><span class="lnt">261
+</span><span class="lnt">262
+</span><span class="lnt">263
+</span><span class="lnt">264
+</span><span class="lnt">265
+</span><span class="lnt">266
+</span><span class="lnt">267
+</span><span class="lnt">268
+</span><span class="lnt">269
+</span><span class="lnt">270
+</span><span class="lnt">271
+</span><span class="lnt">272
+</span><span class="lnt">273
+</span><span class="lnt">274
+</span><span class="lnt">275
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">import</span> <span class="n">torch</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">tqdm</span> <span class="n">import</span> <span class="n">tqdm</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">numpy</span> <span class="n">as</span> <span class="n">np</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">random</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">os</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">sys</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">datetime</span> <span class="n">import</span> <span class="n">datetime</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Add the gRNAde path to import evaluation tools</span>
+</span></span><span class="line"><span class="cl"><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/home/remote1/geometric-rna-design/src&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/home/remote1/geometric-rna-design/&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">models</span> <span class="n">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">utils</span> <span class="n">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">diffusion</span> <span class="n">import</span> <span class="n">NoiseScheduleVP</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">sampling</span> <span class="n">import</span> <span class="n">get_sampling_fn</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">datasets</span> <span class="n">import</span> <span class="n">utils</span> <span class="n">as</span> <span class="n">du</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">functools</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">tree</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">configs</span><span class="o">.</span><span class="n">inference_ribodiffusion</span> <span class="n">import</span> <span class="n">get_config</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Import gRNAde evaluation functions</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">src</span><span class="o">.</span><span class="n">evaluator</span> <span class="n">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">self_consistency_score_eternafold</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">edit_distance</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_utils</span> <span class="n">import</span> <span class="n">pdb_to_tensor</span><span class="p">,</span> <span class="n">get_c4p_coords</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">src</span><span class="o">.</span><span class="n">constants</span> <span class="n">import</span> <span class="n">NUM_TO_LETTER</span><span class="p">,</span> <span class="n">PROJECT_PATH</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Import BioPython for sequence handling</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">Bio</span> <span class="n">import</span> <span class="n">SeqIO</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Seq</span> <span class="n">import</span> <span class="n">Seq</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">Bio</span><span class="o">.</span><span class="n">SeqRecord</span> <span class="n">import</span> <span class="n">SeqRecord</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Choose checkpoint name</span>
+</span></span><span class="line"><span class="cl"><span class="n">checkpoint_path</span> <span class="o">=</span> <span class="s1">&#39;./ckpts/exp_inf.pth&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">sampling_steps</span> <span class="o">=</span> <span class="mi">100</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_optimizer</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;Return a flax optimizer object based on `config`.&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">==</span> <span class="s1">&#39;Adam&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span> <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">beta1</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span> 
+</span></span><span class="line"><span class="cl">                              <span class="n">eps</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">weight_decay</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">==</span> <span class="s1">&#39;AdamW&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span> <span class="n">amsgrad</span><span class="o">=</span><span class="n">True</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">raise</span> <span class="n">NotImplementedError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Optimizer {config.optim.optimizer} not supported yet!&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">optimizer</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">extract_sec_struct_from_pdb</span><span class="p">(</span><span class="n">pdb_file</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Extract secondary structure from PDB file using gRNAde&#39;s data utilities.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sequence</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">sec_struct</span><span class="p">,</span> <span class="n">sasa</span> <span class="o">=</span> <span class="n">pdb_to_tensor</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pdb_file</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">            <span class="n">return_sec_struct</span><span class="o">=</span><span class="n">True</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">            <span class="n">return_sasa</span><span class="o">=</span><span class="n">True</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">keep_insertions</span><span class="o">=</span><span class="n">False</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">[</span><span class="n">sec_struct</span><span class="p">]</span> <span class="k">if</span> <span class="n">sec_struct</span> <span class="k">else</span> <span class="n">None</span>
+</span></span><span class="line"><span class="cl">    <span class="n">except</span> <span class="n">Exception</span> <span class="n">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;Warning: Could not extract secondary structure from {pdb_file}: {e}&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">None</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">prepare_raw_data_for_grnade_eval</span><span class="p">(</span><span class="n">pdb_file</span><span class="p">,</span> <span class="n">native_seq</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Prepare raw data structure compatible with gRNAde evaluator.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sequence</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">sec_struct</span><span class="p">,</span> <span class="n">sasa</span> <span class="o">=</span> <span class="n">pdb_to_tensor</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pdb_file</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">            <span class="n">return_sec_struct</span><span class="o">=</span><span class="n">True</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">            <span class="n">return_sasa</span><span class="o">=</span><span class="n">True</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">keep_insertions</span><span class="o">=</span><span class="n">False</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">raw_data</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">native_seq</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;coords_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">coords</span><span class="p">]</span> <span class="k">if</span> <span class="n">coords</span> <span class="n">is</span> <span class="ow">not</span> <span class="n">None</span> <span class="k">else</span> <span class="p">[],</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;sec_struct_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">sec_struct</span><span class="p">]</span> <span class="k">if</span> <span class="n">sec_struct</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&#34;.&#34;</span><span class="p">]</span> <span class="o">*</span> <span class="n">len</span><span class="p">(</span><span class="n">native_seq</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;sasa_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">sasa</span><span class="p">]</span> <span class="k">if</span> <span class="n">sasa</span> <span class="n">is</span> <span class="ow">not</span> <span class="n">None</span> <span class="k">else</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">len</span><span class="p">(</span><span class="n">native_seq</span><span class="p">))]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">raw_data</span>
+</span></span><span class="line"><span class="cl">    <span class="n">except</span> <span class="n">Exception</span> <span class="n">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;Warning: Could not prepare raw data from {pdb_file}: {e}&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># Return minimal raw data structure</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">native_seq</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;coords_list&#39;</span><span class="p">:</span> <span class="p">[],</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;sec_struct_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;.&#34;</span><span class="p">]</span> <span class="o">*</span> <span class="n">len</span><span class="p">(</span><span class="n">native_seq</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;sasa_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">len</span><span class="p">(</span><span class="n">native_seq</span><span class="p">))]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">evaluate_ribodiffusion_with_grnade_sc</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">native_seq</span><span class="p">,</span> <span class="n">pdb_file</span><span class="p">,</span> <span class="n">pdb_id</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">                                         <span class="n">output_dir</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">save_results</span><span class="o">=</span><span class="n">True</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Evaluate RiboDiffusion samples using gRNAde&#39;s self-consistency evaluation.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Prepare raw data for gRNAde evaluator</span>
+</span></span><span class="line"><span class="cl">    <span class="n">raw_data</span> <span class="o">=</span> <span class="n">prepare_raw_data_for_grnade_eval</span><span class="p">(</span><span class="n">pdb_file</span><span class="p">,</span> <span class="n">native_seq</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Convert RiboDiffusion samples to numpy arrays</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sample_arrays</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sample_arrays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sample_arrays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sample</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Create mask for coordinates (assume all positions are valid for now)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mask_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">len</span><span class="p">(</span><span class="n">native_seq</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="ne">bool</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Calculate basic metrics</span>
+</span></span><span class="line"><span class="cl">    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;pdb_id&#39;</span><span class="p">:</span> <span class="n">pdb_id</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;native_seq&#39;</span><span class="p">:</span> <span class="n">native_seq</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">[],</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;recovery_rates&#39;</span><span class="p">:</span> <span class="p">[],</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;edit_distances&#39;</span><span class="p">:</span> <span class="p">[],</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;sc_scores_eternafold&#39;</span><span class="p">:</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Convert native sequence to numerical for recovery calculation</span>
+</span></span><span class="line"><span class="cl">    <span class="n">letter_to_num</span> <span class="o">=</span> <span class="p">{</span><span class="n">letter</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">NUM_TO_LETTER</span><span class="p">)}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">native_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">letter_to_num</span><span class="p">[</span><span class="n">char</span><span class="p">]</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">native_seq</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Evaluating {len(samples)} samples for {pdb_id}:&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample_array</span> <span class="ow">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">sample_arrays</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">designed_seq</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">NUM_TO_LETTER</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">sample_array</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;samples&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">designed_seq</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># Calculate recovery rate</span>
+</span></span><span class="line"><span class="cl">        <span class="n">recovery</span> <span class="o">=</span> <span class="p">(</span><span class="n">sample_array</span> <span class="o">==</span> <span class="n">native_array</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;recovery_rates&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">recovery</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># Calculate edit distance using gRNAde&#39;s function</span>
+</span></span><span class="line"><span class="cl">        <span class="n">edit_dist</span> <span class="o">=</span> <span class="n">edit_distance</span><span class="p">(</span><span class="n">designed_seq</span><span class="p">,</span> <span class="n">native_seq</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;edit_distances&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edit_dist</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Sample {i+1}: Recovery={recovery:.4f}, Edit_dist={edit_dist}&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Calculate self-consistency scores using gRNAde&#39;s EternaFold evaluator</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Calculating self-consistency scores with EternaFold...&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sc_scores</span> <span class="o">=</span> <span class="n">self_consistency_score_eternafold</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sample_arrays</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">raw_data</span><span class="p">[</span><span class="s1">&#39;sec_struct_list&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="n">mask_coords</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;sc_scores_eternafold&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc_scores</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sc_score</span> <span class="ow">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">sc_scores</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Sample {i+1}: SC_score={sc_score:.4f}&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">    <span class="n">except</span> <span class="n">Exception</span> <span class="n">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;Warning: Could not calculate SC scores: {e}&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;This might be due to EternaFold not being properly installed or configured.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;sc_scores_eternafold&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">len</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Save results</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">save_results</span> <span class="ow">and</span> <span class="n">output_dir</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># Save as FASTA file compatible with gRNAde format</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sequences</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># First record: input sequence with metadata</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SeqRecord</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Seq</span><span class="p">(</span><span class="n">native_seq</span><span class="p">),</span> 
+</span></span><span class="line"><span class="cl">            <span class="n">id</span><span class="o">=</span><span class="s2">&#34;input_sequence,&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">description</span><span class="o">=</span><span class="n">f</span><span class="s2">&#34;pdb_id={pdb_id}, ribodiffusion_evaluation&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">))</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># Remaining records: designed sequences with metrics</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">recovery</span><span class="p">,</span> <span class="n">edit_dist</span><span class="p">,</span> <span class="n">sc_score</span><span class="p">)</span> <span class="ow">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">zip</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;samples&#39;</span><span class="p">],</span> 
+</span></span><span class="line"><span class="cl">            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;recovery_rates&#39;</span><span class="p">],</span> 
+</span></span><span class="line"><span class="cl">            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;edit_distances&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;sc_scores_eternafold&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SeqRecord</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Seq</span><span class="p">(</span><span class="n">seq</span><span class="p">),</span> 
+</span></span><span class="line"><span class="cl">                <span class="n">id</span><span class="o">=</span><span class="n">f</span><span class="s2">&#34;sample={i},&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="n">description</span><span class="o">=</span><span class="n">f</span><span class="s2">&#34;recovery={recovery:.4f}, edit_dist={edit_dist}, sc_score={sc_score:.4f}&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">))</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># Save FASTA</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fasta_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">f</span><span class="s2">&#34;{pdb_id}_ribodiffusion_designs.fasta&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">fasta_path</span><span class="p">,</span> <span class="s2">&#34;fasta&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Results saved to: {fasta_path}&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Print summary statistics</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">{&#39;=&#39;*50}&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;Summary for {pdb_id}:&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;Native sequence length: {len(native_seq)}&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;Number of samples: {len(samples)}&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;Mean Recovery: {np.mean(results[&#39;recovery_rates&#39;]):.4f} ± {np.std(results[&#39;recovery_rates&#39;]):.4f}&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;Mean Edit Distance: {np.mean(results[&#39;edit_distances&#39;]):.2f} ± {np.std(results[&#39;edit_distances&#39;]):.2f}&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;sc_scores_eternafold&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;Mean SC Score (EternaFold): {np.mean(results[&#39;sc_scores_eternafold&#39;]):.4f} ± {np.std(results[&#39;sc_scores_eternafold&#39;]):.4f}&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;SC Scores not calculated (EternaFold unavailable)&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;{&#39;=&#39;*50}&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">results</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Initialize model</span>
+</span></span><span class="line"><span class="cl"><span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ema</span> <span class="o">=</span> <span class="n">ExponentialMovingAverage</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">decay</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ema_decay</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">params</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">optimizer</span> <span class="o">=</span> <span class="n">get_optimizer</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">state</span> <span class="o">=</span> <span class="n">dict</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">ema</span><span class="o">=</span><span class="n">ema</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">model_size</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">20</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Model size: {:.1f}MB&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_size</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Load checkpoint</span>
+</span></span><span class="line"><span class="cl"><span class="n">state</span> <span class="o">=</span> <span class="n">restore_checkpoint</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ema</span><span class="o">.</span><span class="n">copy_to</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Initialize noise scheduler</span>
+</span></span><span class="line"><span class="cl"><span class="n">noise_scheduler</span> <span class="o">=</span> <span class="n">NoiseScheduleVP</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">sde</span><span class="o">.</span><span class="n">schedule</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">                                 <span class="n">continuous_beta_0</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">sde</span><span class="o">.</span><span class="n">continuous_beta_0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                 <span class="n">continuous_beta_1</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">sde</span><span class="o">.</span><span class="n">continuous_beta_1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Obtain data scalar and inverse scalar</span>
+</span></span><span class="line"><span class="cl"><span class="n">inverse_scaler</span> <span class="o">=</span> <span class="n">get_data_inverse_scaler</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Setup sampling function</span>
+</span></span><span class="line"><span class="cl"><span class="n">test_sampling_fn</span> <span class="o">=</span> <span class="n">get_sampling_fn</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">noise_scheduler</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">sampling_steps</span><span class="p">,</span> <span class="n">inverse_scaler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">pdb2data</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">du</span><span class="o">.</span><span class="n">PDBtoData</span><span class="p">,</span> <span class="n">num_posenc</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">num_posenc</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">                            <span class="n">num_rbf</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">num_rbf</span><span class="p">,</span> <span class="n">knn_num</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">knn_num</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Run inference</span>
+</span></span><span class="line"><span class="cl"><span class="n">pdb_file</span> <span class="o">=</span> <span class="s1">&#39;/home/remote1/geometric-rna-design/data/raw/7PIC_1_5.pdb&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">pdb_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">pdb_file</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.pdb&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Configure sampling</span>
+</span></span><span class="line"><span class="cl"><span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">dynamic_threshold</span> <span class="o">=</span> <span class="n">True</span>
+</span></span><span class="line"><span class="cl"><span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">cond_scale</span> <span class="o">=</span> <span class="mf">0.4</span>
+</span></span><span class="line"><span class="cl"><span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Generate samples</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Processing PDB: {pdb_file}&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">test_sampling_fn</span> <span class="o">=</span> <span class="n">get_sampling_fn</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">noise_scheduler</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">sampling_steps</span><span class="p">,</span> <span class="n">inverse_scaler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">struct_data</span> <span class="o">=</span> <span class="n">pdb2data</span><span class="p">(</span><span class="n">pdb_file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">struct_data</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">map_structure</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">repeat_interleave</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">),</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">struct_data</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">samples</span> <span class="o">=</span> <span class="n">test_sampling_fn</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">struct_data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Get native sequence</span>
+</span></span><span class="line"><span class="cl"><span class="n">native_seq</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">list</span><span class="p">(</span><span class="n">NUM_TO_LETTER</span><span class="p">[</span><span class="n">struct_data</span><span class="p">[</span><span class="s1">&#39;seq&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]))</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Native sequence: {native_seq}&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Create output directory</span>
+</span></span><span class="line"><span class="cl"><span class="n">current_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&#34;%Y%m</span><span class="si">%d</span><span class="s2">_%H%M%S&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">output_dir</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&#34;ribodiffusion_grnade_eval_{current_time}&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Evaluate with gRNAde&#39;s self-consistency framework</span>
+</span></span><span class="line"><span class="cl"><span class="n">results</span> <span class="o">=</span> <span class="n">evaluate_ribodiffusion_with_grnade_sc</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">samples</span><span class="o">=</span><span class="n">samples</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">native_seq</span><span class="o">=</span><span class="n">native_seq</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pdb_file</span><span class="o">=</span><span class="n">pdb_file</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pdb_id</span><span class="o">=</span><span class="n">pdb_id</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">save_results</span><span class="o">=</span><span class="n">True</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在13000条数据进行测试，</p>
+<div align=center><img src="21.png" width=400/></div>
+<center><font size=2>自动化测试</font></center>
+<div align=center><img src="19.png" width=400/><img src="20.png" width=400/></div>
+<center><font size=2>测试结果与测试结果（log后）</font></center>
 <h3 id="初步改进attention">初步改进——attention
 </h3><p>考虑到多层注意力机制会有利于长序列的捕捉，我先使用<code>MultiheadAttention</code>，加了一层简单的代码，进行训练。其中原本release的代码有bug，尤其是这个函数里的mask_coords掩码逻辑有问题，经常与sample的维度不匹配报错。我把修改过的<code>evaluator.py</code>贴在这里，同时防止显存爆炸，需要设置一些batch。</p>
 <div class="highlight"><div class="chroma">
