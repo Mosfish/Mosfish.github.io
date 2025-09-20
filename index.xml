@@ -7,7 +7,21 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Xiangyu Wen</copyright>
-        <lastBuildDate>Thu, 04 Sep 2025 15:36:23 +0800</lastBuildDate><atom:link href="https://mosfish.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 20 Sep 2025 16:55:14 +0800</lastBuildDate><atom:link href="https://mosfish.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>徜徉在arxiv和bioarxiv的海洋里</title>
+        <link>https://mosfish.github.io/p/%E5%BE%9C%E5%BE%89%E5%9C%A8arxiv%E5%92%8Cbioarxiv%E7%9A%84%E6%B5%B7%E6%B4%8B%E9%87%8C/</link>
+        <pubDate>Sat, 20 Sep 2025 16:55:14 +0800</pubDate>
+        
+        <guid>https://mosfish.github.io/p/%E5%BE%9C%E5%BE%89%E5%9C%A8arxiv%E5%92%8Cbioarxiv%E7%9A%84%E6%B5%B7%E6%B4%8B%E9%87%8C/</guid>
+        <description>&lt;img src="https://mosfish.github.io/p/%E5%BE%9C%E5%BE%89%E5%9C%A8arxiv%E5%92%8Cbioarxiv%E7%9A%84%E6%B5%B7%E6%B4%8B%E9%87%8C/1.jpg" alt="Featured image of post 徜徉在arxiv和bioarxiv的海洋里" /&gt;&lt;h1 id=&#34;关于deep-learning与rna-inverse-folding的文献&#34;&gt;关于Deep Learning与RNA inverse folding的文献
+&lt;/h1&gt;&lt;p&gt;上周正在摸鱼，突然看见导的zoom发了个邮件：“xxx invites you &amp;hellip;&amp;hellip; at 11:30&amp;quot;还以为改时间了，但是看见原本9点半的链接还没取消，于是开会那天ppt的理论部分还没做，9点半进去看看情况（万一选择这个时候开始呢），结果听到，”好的我们开始吧“。&lt;/p&gt;
+&lt;p&gt;于是，卒。&lt;/p&gt;
+&lt;p&gt;预料内的被批评了，毕竟ppt只有实验没有原理，被训也是正常。这周啥也不干了，好好读文献吧，要不然怎么在文章里tell(吹) a(牛) story(呢)，下周一个个汇报。&lt;/p&gt;
+&lt;h2 id=&#34;a-hyperbolic-discrete-diffusion-3d-rna-inverse-folding-model-for-functional-rna&#34;&gt;A Hyperbolic Discrete Diffusion 3D RNA Inverse Folding Model for functional RNA
+&lt;/h2&gt;&lt;p&gt;design&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>How about RNA inverse folding?</title>
         <link>https://mosfish.github.io/p/how-about-rna-inverse-folding/</link>
         <pubDate>Thu, 04 Sep 2025 15:36:23 +0800</pubDate>
