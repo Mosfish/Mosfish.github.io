@@ -298,7 +298,12 @@
         <li><a href="#另一个生成范式ribodiffusion">另一个生成范式：RiboDiffusion</a></li>
         <li><a href="#初步改进attention">初步改进——attention</a></li>
         <li><a href="#第一次测试训练的模型">第一次测试训练的模型</a></li>
-        <li><a href="#测试multi-scale在数据集的效果">测试Multi-scale在数据集的效果</a></li>
+        <li><a href="#测试multi-scale在数据集的效果">测试Multi-scale在数据集的效果</a>
+          <ol>
+            <li><a href="#但是数据泄露的问题来了">但是数据泄露的问题来了</a></li>
+          </ol>
+        </li>
+        <li><a href="#痛定思痛如何优化split方法">痛定思痛：如何优化split方法？</a></li>
       </ol>
     </li>
   </ol>
@@ -6598,6 +6603,29 @@
 <center><font size=2>是有细微差别的，毕竟grnade已经算sota了，优化起来费劲</font></center>
 <div align=center><img src="17.png" width=600/></div>
 <center><font size=2>经过对比，在中长序列显著提高了SCC，同时平均Recovery差别不大</font></center>
+<h4 id="但是数据泄露的问题来了">但是数据泄露的问题来了
+</h4><p>作者有13000+数据（2023年RNAsolo），能用的大概12000+，其中train split有12000+，而500+个validation set，200+在test set。</p>
+<p>什么概念？12000：500：200，比8：1：1差远了；这还没完，更离谱的是这200条数据集甚至长度都没超过200的，这让我测试个啥？</p>
+<div align=center><img src="picture.png" width=300/></div>
+<center><font size=2>0-160的长度范围</font></center>
+<p>当然，实验不能白做，我在这个test set上面还是测试了一下两个模型，看起来我们的方法在长序列情况下还是占优势：</p>
+<div align=center><img src="picture1.png" width=600/></div>
+<center><font size=2>其实不小心把图例打错了，不过问题不大</font></center>
+<h3 id="痛定思痛如何优化split方法">痛定思痛：如何优化split方法？
+</h3><p>作者把小于10nt、大于1000nt的全丢进去训练集了；再加上划分的不合理，我的想法是，要不先按照0-100，100-200，200+的length range把cluster进行划分？然后在各自范围用8：1：1的方式来筛选cluster，最后把cluster含有的pdb索引拿出来，这样会好一些。</p>
+<p><strong>但是这就产生了疑惑：</strong></p>
+<p>**为啥不是8:1:1直接划分不同长度的呢？**其实我也不清楚，我和gemini讨论之后发现，作者划分cluster是按照rna家族的相似性进行划分的，如果直接划分的话容易把同一个cluster的rna划分到一半训练集一半测试集，由于本身结构相似，就又数据泄露了(不是，怎么老是泄露啊哥们，你以为你是至善园的管道吗)。</p>
+<p>先按照这个想法试试，之后我得到：</p>
+<div align=center><img src="output1.png" width=400/></div>
+<center><font size=2>train split的分布，大概12000条</font></center>
+<div align=center><img src="output2.png" width=400/></div>
+<center><font size=2>validation split的分布，大概450条其实也还好</font></center>
+<div align=center><img src="output3.png" width=400/></div>
+<center><font size=2>test split的分布，大概660条</font></center>
+<p>这样子看起来就好多了。如今2025年，我之前捣鼓下载了最新的数据集（15000+条诶！），然后导师说用23年的。但是不能白下载对不对嘿嘿，那就用25年比23年多出的这部分加入到测试集！刚好评估一下模型对未知rna的预测水平。</p>
+<div align=center><img src="rnasolo.png" width=400/></div>
+<center><font size=2>多了快3000条诶</font></center>
+<p>除此之外，既然是评估长rna的预测水平，原先模型好像把1000+nt的rna全丢训练集了，之后看看咋改动一下？</p>
 
 </section>
 
