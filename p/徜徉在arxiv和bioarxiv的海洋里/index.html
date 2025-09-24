@@ -308,8 +308,16 @@
     <li><a href="#beyond-rna-structure-alone-complex-aware-feature-fusion-for-tertiary-structure-based-rna-design">Beyond RNA Structure Alone: Complex-Aware Feature Fusion for Tertiary Structure-based RNA Design</a>
       <ol>
         <li><a href="#abstract">Abstract</a></li>
+        <li><a href="#introduction">Introduction</a>
+          <ol>
+            <li><a href="#蚊香小课堂">蚊香小课堂</a></li>
+          </ol>
+        </li>
+        <li><a href="#methods">Methods</a></li>
+        <li><a href="#experiments">Experiments</a></li>
       </ol>
     </li>
+    <li><a href="#ribodiffusion-tertiary-structure-based-rna-inverse-folding-with-generative-diffusion-models">RiboDiffusion: tertiary structure-based RNA inverse folding with generative diffusion models</a></li>
   </ol>
 </nav>
         </div>
@@ -466,8 +474,9 @@ $$<p>
 </h2><h3 id="abstract">Abstract
 </h3><ul>
 <li>important in synthetic biology and therapeutics</li>
-<li>limitation: overlook the role of complex-level information</li>
+<li>limitation: <strong>overlook the role of complex-level information</strong></li>
 </ul>
+<p>事实上作者的观点是，光分析rna不行，还得去看有关系的complexes。</p>
 <blockquote>
 <p>our method incorporates protein features extracted by protein language model (e.g., ESM-2)</p></blockquote>
 <p>没看懂，为什么要用蛋白质的feature来拟合rna？宛宛类卿是吗？</p>
@@ -476,6 +485,60 @@ $$<p>
 <p>a high-affinity design framework that combines our CARD with an affinity evaluation model.</p></blockquote>
 <p>多了个evaluation吗？有点意思。</p>
 <p>Final goal: produce high-affinity RNA sequences</p>
+<h3 id="introduction">Introduction
+</h3><ul>
+<li>more sophisticated computational approaches that can model the complex relationship between RNA sequences and their structures.</li>
+</ul>
+<p>作者提到了基于RL的LEARNA和Meta-LEARNA，基于3D图的RDesign和RhoDesign。</p>
+<ul>
+<li>different from protein folding which roughly follows Anfinsen’s rule, RNAs are highly flexible and rely on interactions with proteins, DNA, and other biomolecules to achieve folding，又是一个表述rna结构灵活多变的。</li>
+<li>RNAs may adopt various conformations by interacting with distinct macromolecules at different stages of functioning.不同阶段还会与大分子结合。</li>
+</ul>
+<p>考虑到OVERLOOK那些information的局限性，那就加上不就得了。</p>
+<img src="assets/image-20250924001621731.png" alt="image-20250924001621731" style="zoom:50%;" />
+<p>本文就是考虑rna结构特征与protein-RNA的情况，综合生成序列。</p>
+<p>Outline也如图一，有一个pre-trained protein language model (PLM)来处理蛋白质，以及Complex-Aware Transformer (CAFormer)来结合rna与蛋白质的特征，利用distance-aware filtering来选择作用区域忽略无关区域影响，以上使模型能够捕捉蛋白质-RNA复合物上下文信息并聚焦于复合体内部的相互作用区域。</p>
+<p>整体而言，作者迭代筛选生成的RNA序列，候选序列先根据预测的亲和力分数进行过滤，再通过多重折叠模型进行结构兼容性验证。</p>
+<p><strong>Affinity Evaluation</strong></p>
+<p>关于“亲和力”，作者提到了预测模型PNAB，DeePNAP，PredPRBA, PRdeltaGPred and PRA-Pred。</p>
+<p>然而RNA-protein complex结构数据太稀缺，CoPRA 整合了PRA310并提出multi-modal model，模型将RNA和蛋白质大型语言模型与全面的结构信息相结合。</p>
+<h4 id="蚊香小课堂">蚊香小课堂
+</h4><p>作者提到inverse folding的发展与背景：</p>
+<blockquote>
+<p>RNA design aims to generate sequences that fold into <strong>predefined structures.</strong> Early methods focused on <strong>secondary structure optimization</strong>, using <strong>thermodynamic parameters</strong> and <strong>energy minimization</strong>. Tools like <strong>RNAfold</strong> predict RNA secondary structures based on the <strong>minimum free energy principle</strong>. As understanding of RNA structure has advanced, focus has shifted to <strong>complex tertiary structure-based design</strong> due to RNA’s high conformational flexibility, which challenges traditional thermodynamic methods. Recent deep learning approaches for RNA tertiary structure design include <strong>gRNAde, which utilizes geometric deep learning and graph neural networks to generate RNA sequences</strong>; <strong>RiboDiffusion</strong>, a diffusion model for inverse folding leveraging RNA backbone structures; <strong>RDesign</strong>, which employs a data-efficient learning framework with contrastive learning for tertiary structures; and <strong>Rhodesign</strong>, focusing on RNA aptamer design by guiding sequence generation through structural predictions.</p></blockquote>
+<p>从热力学参数和能量最小化原理，到基于深度学习来预测rna。其实可以结合吧？</p>
+<h3 id="methods">Methods
+</h3><p>作者的pipeline：</p>
+<img src="assets/image-20250924003914813.png" alt="image-20250924003914813" style="zoom: 33%;" />
+<p>倒是比较完整。对于那个滤波器，由于一个蛋白质可能通过多个结合位点（不同构象）与RNA结合，同时单个RNA也能与不同蛋白质相互作用，作者给出以下图来说明：</p>
+<img src="assets/image-20250924004136830.png" alt="image-20250924004136830" style="zoom:50%;" />
+<p><strong>COMPLEX-AWARE ATTENTION BLOCK</strong></p>
+<p>关于这个部分，作者先把rna和过滤的蛋白质信息拼接，并用了N个multi-head self-attention来增强上下文捕捉能力。</p>
+<img src="assets/image-20250924004411039.png" alt="image-20250924004411039" style="zoom:33%;" />
+<p>之后采用了类似于RhoDesign的基于Transformer的解码器来生成RNA序列。解码过程被构建为一个下一个标记预测任务，其中解码器基于先前的标记预测下一个核苷酸。在训练过程中，模型通过使用交叉熵损失进行训练。</p>
+<p><strong>High-Affinity RNA Design Framework</strong></p>
+<ul>
+<li>structure-to-sequence design model and evaluation tools.</li>
+</ul>
+<p>先通过作者的模型进行设计，生成符合复合约束条件（如结合位点和相互作用）的定制化RNA序列；对序列利用PRA201数据集上训练的集成回归模型来评估，对结构利用AlphaFold3、RhoFold和RoseTTAFold2NA等来折叠后算RMSD，每次筛选前10%∼20%的序列，迭代直到最优。</p>
+<h3 id="experiments">Experiments
+</h3><p><strong>Dataset and Implementation Details</strong></p>
+<ul>
+<li>Datasets: PRI30K and PRA201.</li>
+<li>后者用于blind test，前者剔除结构相似之类的用于训练与测试，处理后是21,050个蛋白质-RNA配对和2,309条RNA序列的数据集。Cluster也是用的CD-HIT，相似性80%。</li>
+<li>200 epochs, batch size of 48 (24 per GPU), attention blocks <em>N</em> = 6, local filtered size <em>K</em> = 64, ESM-2 650M提取蛋白质表征。</li>
+<li>评比模型：SeqRNN and SeqLSTM, StructGNN, GraphTrans, RDesign, and RhoDesign.</li>
+</ul>
+<p><strong>Ablation Studies</strong></p>
+<p>key components of  method, including the number of attention blocks in CAFormer, the fashion of filtering the protein representation, and the choices of protein representation model.</p>
+<p>随着CAFormer模块数量增加，性能呈现持续提升趋势；其他指标就一一测试就行。</p>
+<img src="assets/image-20250924010453989.png" alt="image-20250924010453989" style="zoom:50%;" />
+<p>根据作者之前的流程，“亲和力设计”能展现出比天然RNA序列更高的结合亲和力，且与天然序列的结构差异极小。其他的conclusion我就不多嘴了。</p>
+<h2 id="ribodiffusion-tertiary-structure-based-rna-inverse-folding-with-generative-diffusion-models">RiboDiffusion: tertiary structure-based RNA inverse folding with generative diffusion models
+</h2><p>我就只写重点吧：</p>
+<ul>
+<li>scarcity of data, nonunique structure-sequence mapping, flexibility of RNA conformation.</li>
+</ul>
 
 </section>
 
