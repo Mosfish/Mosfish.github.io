@@ -318,6 +318,8 @@
       </ol>
     </li>
     <li><a href="#ribodiffusion-tertiary-structure-based-rna-inverse-folding-with-generative-diffusion-models">RiboDiffusion: tertiary structure-based RNA inverse folding with generative diffusion models</a></li>
+    <li><a href="#learning-to-design-rna">Learning to Design RNA</a></li>
+    <li><a href="#rna-dcgen-dual-constrained-rna-sequence-generation-with-llm-attack"><strong>RNA-DCGen: Dual Constrained RNA Sequence</strong> Generation with LLM-Attack</a></li>
   </ol>
 </nav>
         </div>
@@ -403,8 +405,11 @@
 </h1><p>上周正在摸鱼，突然看见导的zoom发了个邮件：“xxx invites you &hellip;&hellip; at 11:30&quot;还以为改时间了，但是看见原本9点半的链接还没取消，于是开会那天ppt的理论部分还没做，9点半进去看看情况（万一选择这个时候开始呢），结果听到，”好的我们开始吧“。</p>
 <p>于是，卒。</p>
 <p>预料内的被批评了，毕竟ppt只有实验没有原理，被训也是正常。这周啥也不干了，好好读文献吧，要不然怎么在文章里tell(吹) a(牛) story(呢)，下周一个个汇报。此处我就简单写一些我认为相对有启发的内容。</p>
+<p><strong>0924更新</strong>，其实算是找了一堆没啥用的SOTA文章汇报（最起码对现在的研究没啥用），一周读了30篇论文。刚才我和老师大眼瞪小眼。建议去读：</p>
+<blockquote>
+<p><strong>mamba gnn, long protein seq, long molecule, long-range gnn, long-range attention</strong></p></blockquote>
 <h2 id="a-hyperbolic-discrete-diffusion-3d-rna-inverse-folding-model-for-functional-rna-design">A Hyperbolic Discrete Diffusion 3D RNA Inverse Folding Model for functional RNA design
-</h2><p>rnm，开幕雷击，这是一篇刊，快50页，读死我了。简称这个为RIdiffusion吧。</p>
+</h2><p>开幕雷击，这是一篇刊，快50页，读死我了。简称这个为RIdiffusion吧。</p>
 <h3 id="abstractintroduction">Abstract&amp;Introduction
 </h3><ul>
 <li><strong>Background:</strong> revolutionary opportunities for diverse RNA-based biotechnologies and biomedical applications.</li>
@@ -430,12 +435,12 @@
 <blockquote>
 <p>compared to Euclidean space, a hyperbolic distance better captures molecular differences and improve performance in small molecule generation tasks</p></blockquote>
 <p>也就是说这个hb比euc更能展现结构特征，或者说，更能体现subtle structural的区别。作者通过以下这张图来介绍：</p>
-<img src="assets/image-20250923222419058.png" alt="image-20250923222419058" style="zoom:50%;" />
+<img src="assets/image-20250923222419058.png" alt="image-20250923222419058" style="zoom:50%; display: block; margin: 0 auto;" />
 <p>我们其实重点关注A,D就行，A是变换的一个图示结构，D是rna结构铺在hb空间里的形态，简而言之，不同chain（或者backbone）分开了，也就更好捕捉特征。</p>
 <h4 id="模型概况">模型概况
 </h4><p><strong>hyperbolic equivariant graph neural networks</strong> (HEGNNs) to <strong>parameterize the discrete diffusion model</strong>, and effectively capture the 3D structural characteristics by <strong>incorporating RNA’s geometric features and topological properties</strong> into the generation process.</p>
 <p>整个的framework如图：</p>
-<img src="assets/image-20250923230102547.png" alt="image-20250923230102547" style="zoom: 25%;" />
+<img src="assets/image-20250923230102547.png" alt="image-20250923230102547" style="zoom: 25%; display: block; margin: 0 auto;" />
 <h3 id="materials-and-methods">MATERIALS AND METHODS
 </h3><p>这部分写的好细好牛，我大部分看不懂，简单说一个<strong>Hyperbolic Equivariant Graph Denoising Network</strong>，</p>
 <p>一般的模型处理这种3D数据的时候会丢失数据，</p>
@@ -469,7 +474,7 @@ $$<p>
 <p>The novelty of generative designs can be viewed from two perspectives: <strong>sequence novelty and physicochemical properties novelty.</strong> In our case, sequence and physicochemical properties (derived from sequence) novelty are important in RNA 3D inverse folding. Indeed, sequence features such as physicochemical properties play a crucial role in functional RNA design. For instance, it was reported that natural RNAs show privileged physicochemical property space which is related to their biological functions. Other sequence features like GC content are important properties related to developability of RNA molecules. Given the nature of one-to-many relationship between the targeted RNA structure and its possible sequences, the novelty and diversity of generated sequences are important considerations for improving physicochemical properties of the designed sequences.</p></blockquote>
 <p>涉及生物学知识比较多，还有类似于理化特性的。</p>
 <p>之后抽样进行physicochemical properties space的评估。就是说三个部分应该有区别。</p>
-<img src="assets/image-20250923234501726.png" alt="image-20250923234501726" style="zoom: 33%;" />
+<img src="assets/image-20250923234501726.png" alt="image-20250923234501726" style="zoom: 33%; display: block; margin: 0 auto;" />
 <h2 id="beyond-rna-structure-alone-complex-aware-feature-fusion-for-tertiary-structure-based-rna-design">Beyond RNA Structure Alone: Complex-Aware Feature Fusion for Tertiary Structure-based RNA Design
 </h2><h3 id="abstract">Abstract
 </h3><ul>
@@ -495,7 +500,7 @@ $$<p>
 <li>RNAs may adopt various conformations by interacting with distinct macromolecules at different stages of functioning.不同阶段还会与大分子结合。</li>
 </ul>
 <p>考虑到OVERLOOK那些information的局限性，那就加上不就得了。</p>
-<img src="assets/image-20250924001621731.png" alt="image-20250924001621731" style="zoom:50%;" />
+<img src="assets/image-20250924001621731.png" alt="image-20250924001621731" style="zoom:50%; display: block; margin: 0 auto;" />
 <p>本文就是考虑rna结构特征与protein-RNA的情况，综合生成序列。</p>
 <p>Outline也如图一，有一个pre-trained protein language model (PLM)来处理蛋白质，以及Complex-Aware Transformer (CAFormer)来结合rna与蛋白质的特征，利用distance-aware filtering来选择作用区域忽略无关区域影响，以上使模型能够捕捉蛋白质-RNA复合物上下文信息并聚焦于复合体内部的相互作用区域。</p>
 <p>整体而言，作者迭代筛选生成的RNA序列，候选序列先根据预测的亲和力分数进行过滤，再通过多重折叠模型进行结构兼容性验证。</p>
@@ -509,12 +514,12 @@ $$<p>
 <p>从热力学参数和能量最小化原理，到基于深度学习来预测rna。其实可以结合吧？</p>
 <h3 id="methods">Methods
 </h3><p>作者的pipeline：</p>
-<img src="assets/image-20250924003914813.png" alt="image-20250924003914813" style="zoom: 33%;" />
+<img src="assets/image-20250924003914813.png" alt="image-20250924003914813" style="zoom: 33%; display: block; margin: 0 auto;" />
 <p>倒是比较完整。对于那个滤波器，由于一个蛋白质可能通过多个结合位点（不同构象）与RNA结合，同时单个RNA也能与不同蛋白质相互作用，作者给出以下图来说明：</p>
-<img src="assets/image-20250924004136830.png" alt="image-20250924004136830" style="zoom:50%;" />
+<img src="assets/image-20250924004136830.png" alt="image-20250924004136830" style="zoom:50%; display: block; margin: 0 auto;" />
 <p><strong>COMPLEX-AWARE ATTENTION BLOCK</strong></p>
 <p>关于这个部分，作者先把rna和过滤的蛋白质信息拼接，并用了N个multi-head self-attention来增强上下文捕捉能力。</p>
-<img src="assets/image-20250924004411039.png" alt="image-20250924004411039" style="zoom:33%;" />
+<img src="assets/image-20250924004411039.png" alt="image-20250924004411039" style="zoom:33%; display: block; margin: 0 auto;" />
 <p>之后采用了类似于RhoDesign的基于Transformer的解码器来生成RNA序列。解码过程被构建为一个下一个标记预测任务，其中解码器基于先前的标记预测下一个核苷酸。在训练过程中，模型通过使用交叉熵损失进行训练。</p>
 <p><strong>High-Affinity RNA Design Framework</strong></p>
 <ul>
@@ -532,13 +537,111 @@ $$<p>
 <p><strong>Ablation Studies</strong></p>
 <p>key components of  method, including the number of attention blocks in CAFormer, the fashion of filtering the protein representation, and the choices of protein representation model.</p>
 <p>随着CAFormer模块数量增加，性能呈现持续提升趋势；其他指标就一一测试就行。</p>
-<img src="assets/image-20250924010453989.png" alt="image-20250924010453989" style="zoom:50%;" />
-<p>根据作者之前的流程，“亲和力设计”能展现出比天然RNA序列更高的结合亲和力，且与天然序列的结构差异极小。其他的conclusion我就不多嘴了。</p>
+<img src="assets/image-20250924010453989.png" alt="image-20250924010453989" style="zoom:50%; display: block; margin: 0 auto;" />
+<p>根据作者之前的流程，&ldquo;亲和力设计&quot;能展现出比天然RNA序列更高的结合亲和力其他的conclusion我就不多嘴了。</p>
 <h2 id="ribodiffusion-tertiary-structure-based-rna-inverse-folding-with-generative-diffusion-models">RiboDiffusion: tertiary structure-based RNA inverse folding with generative diffusion models
 </h2><p>我就只写重点吧：</p>
+<p><strong>Abstract:</strong></p>
 <ul>
-<li>scarcity of data, nonunique structure-sequence mapping, flexibility of RNA conformation.</li>
+<li>
+<p>scarcity of data, nonunique structure-sequence mapping, flexibility of RNA conformation.</p>
+</li>
+<li>
+<p>growing applications in synthetic biology and therapeutics;</p>
+</li>
+<li>
+<p>inverse folding problem;</p>
+</li>
 </ul>
+<p><strong>Introduction:</strong></p>
+<ul>
+<li>
+<p>RNA-based biotechnology;</p>
+</li>
+<li>
+<p>early methods for focus on folding into RNA secondary structures; Some use efficient local search strategies guided by the energy function; Or globally by modeling the sequence distribution or directly manipulating diverse candidates;</p>
+</li>
+<li>
+<p>DAS physically based approach, but still constrained by local design strategy and computational efficiency.</p>
+</li>
+</ul>
+<p><strong>&ndash; only 2D, without considering 3D structures of RNA</strong></p>
+<img src="assets/image-20250924100631702.png" alt="image-20250924100631702" style="zoom: 33%; display: block; margin: 0 auto;" />
+<p><strong>Methods:</strong></p>
+<p>Diffusion;</p>
+<p>Three-atom coarse-grained representation including the atom coordinates of C4’, C1’, N1 (pyrimidine) or N9 (purine) for every nucleotide;</p>
+<p>Consider the RNA inverse folding problem as modeling the conditional distribution p(S|X);</p>
+<p>Based on the GVP-GNN architecture;</p>
+<p><strong>Results</strong></p>
+<p>Dataset: predicting structures with RhoFold. The structures predicted from RNAcentral sequences are filtered by pLDDT to keep only high-quality predictions, resulting in 17 000 structures.</p>
+<p>Cluster: sequence&ndash;PSI-CD-HIT to cluster sequences based on nucleotide similarity. We set the threshold at 0:8=0:6=0:4 and obtain 1252=1157=1114 clusters; structure similarity clustering,  calculate the TM-score matrix using US-align and apply scipy, achieve 2036=1659=1302 clusters with TM-score thresholds of 0:6=0:5=0:4. 15% for testing, 10% for validation.</p>
+<p><strong>Evaluation Metrics:</strong></p>
+<p>RR, F1 Score(RNAfold and RMSD)</p>
+<h2 id="learning-to-design-rna">Learning to Design RNA
+</h2><p><strong>Abstract:</strong></p>
+<ul>
+<li>
+<p>Based on <strong>deep reinforcement learning</strong>;</p>
+</li>
+<li>
+<p>Jointly optimize over a rich space of architectures for the policy network, the hyperparameters of the training procedure and the formulation of the decision process.</p>
+</li>
+</ul>
+<p><strong>Introduction:</strong></p>
+<ul>
+<li>
+<p><strong>LEARNA:</strong> deep RL algorithm for RNA Design. Given a target secondary structure, can predict the entire RNA sequence. After generating an RNA sequence, then folds this and locally adapts it, and uses the distance of the resulting structure to the target structure as an error signal for the RL agent;</p>
+</li>
+<li>
+<p><strong>Meta-LEARNA:</strong> learns a single policy across many RNA Design tasks directly applicable to new RNA Design tasks;</p>
+</li>
+<li>
+<p>The first <strong>application of architecture search</strong> (AS) to RL;</p>
+</li>
+<li>
+<p><strong>New benchmark dataset</strong> with an explicit training, validation and test split;</p>
+</li>
+<li>
+<p><strong>Faster.</strong></p>
+</li>
+</ul>
+<p><strong>THE RNA DESIGN PROBLEM:</strong></p>
+<ul>
+<li>
+<p>Folding algorithm: zuker;</p>
+</li>
+<li>
+<p>Loss Function: Hamming diastance.</p>
+</li>
+</ul>
+<p><strong>LEARNING TO DESIGN RNA:</strong></p>
+<p><strong>Action Space, State Space, Transition Function, Reward Function</strong>;</p>
+<ul>
+<li>
+<p>One problem of current deep reinforcement learning methods is that their performance can be very sensitive to choices regarding the architecture of the policy network, the training hyperparameters, and the formulation of the problem as a decision process.</p>
+</li>
+<li>
+<p>RL often yield noisy or unreliable outcomes in single optimization runs, (a) The number of unsolved sequences, (b) the sum of mean distances, <strong>(c) the sum of minimum distances to the target structure.</strong></p>
+</li>
+</ul>
+<img src="assets/image-20250924101020080.png" alt="image-20250924101020080" style="zoom:50%; display: block; margin: 0 auto;" />
+<h2 id="rna-dcgen-dual-constrained-rna-sequence-generation-with-llm-attack"><strong>RNA-DCGen: Dual Constrained RNA Sequence</strong> Generation with LLM-Attack
+</h2><ul>
+<li>
+<p><strong>Challenge:</strong> recent diffusion and flowmatching-based models face two key limitations: specialization for fixed constraint types, such as tertiary structures, and lack of flexibility in imposing additional conditions beyond the primary property of interest.</p>
+</li>
+<li>
+<p>Generative &ndash;&gt; Search;</p>
+</li>
+<li>
+<p>Dual Constrained: on the sequence itself and on specified constraints.</p>
+</li>
+</ul>
+<img src="assets/image-20250924101257338.png" alt="image-20250924101257338" style="zoom: 33%; display: block; margin: 0 auto;" />
+<p>不是哥们，现在在训练好的模型上面调参都能发顶会吗？</p>
+<p>就读到这里吧，现在真是八仙过海各显神通了说是。赶紧赶mitx课程的ddl了，吐了。</p>
+<img src="assets/image-20250924101806852.png" alt="image-20250924101806852" style="zoom: 25%; display: block; margin: 0 auto;" />
+<p>在味真族的基础上衍生出命真苦。</p>
 
 </section>
 
