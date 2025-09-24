@@ -7,7 +7,56 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Xiangyu Wen</copyright>
-        <lastBuildDate>Sat, 20 Sep 2025 16:55:14 +0800</lastBuildDate><atom:link href="https://mosfish.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 24 Sep 2025 20:19:49 +0800</lastBuildDate><atom:link href="https://mosfish.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>关于Long-Range的识别与预测的文献</title>
+        <link>https://mosfish.github.io/p/%E5%85%B3%E4%BA%8Elong-range%E7%9A%84%E8%AF%86%E5%88%AB%E4%B8%8E%E9%A2%84%E6%B5%8B%E7%9A%84%E6%96%87%E7%8C%AE/</link>
+        <pubDate>Wed, 24 Sep 2025 20:19:49 +0800</pubDate>
+        
+        <guid>https://mosfish.github.io/p/%E5%85%B3%E4%BA%8Elong-range%E7%9A%84%E8%AF%86%E5%88%AB%E4%B8%8E%E9%A2%84%E6%B5%8B%E7%9A%84%E6%96%87%E7%8C%AE/</guid>
+        <description>&lt;h1 id=&#34;找到了motivation了吗&#34;&gt;找到了Motivation了吗？
+&lt;/h1&gt;&lt;p&gt;其实早就找到了，就是识别long rna sequence嘛，问题是我们的multiscale光这个不够，需要多看论文多找多想。&lt;/p&gt;
+&lt;p&gt;其实本周算是找了一堆没啥用的SOTA文章汇报（最起码对现在的研究没啥用），一周读了二十来篇论文但是白白浪费时间（当然也有好处，最起码熟悉了背景）。刚才我和老师大眼瞪小眼，咋汇报的文献没啥idea启发嘞？因此导师建议去找：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;mamba gnn, long protein seq, long molecule, long-range gnn, long-range attention&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;那么加上attention is all you need这篇transformer的文章，和讲multiscale的文章，本周再来一轮汇报。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>MITx MicroMasters in Statistics and Data Science</title>
+        <link>https://mosfish.github.io/p/mitx-micromasters-in-statistics-and-data-science/</link>
+        <pubDate>Wed, 24 Sep 2025 20:19:34 +0800</pubDate>
+        
+        <guid>https://mosfish.github.io/p/mitx-micromasters-in-statistics-and-data-science/</guid>
+        <description>&lt;h1 id=&#34;start-my-micromasters-program&#34;&gt;Start my MicroMasters Program
+&lt;/h1&gt;&lt;p&gt;I was recommended this program to enhance my DataScience basics by my friends. I wanna begin with &lt;strong&gt;MITx 6.86x Machine Learning with Python: from Linear Models to Deep Learning.&lt;/strong&gt;&lt;/p&gt;
+&lt;img src=&#34;assets/image-20250924214237190.png&#34; alt=&#34;image-20250924214237190&#34; style=&#34;zoom: 25%;&#34; /&gt;
+&lt;h1 id=&#34;mitx-686x-machine-learning-with-python-from-linear-models-to-deep-learning&#34;&gt;MITx 6.86x Machine Learning with Python: from Linear Models to Deep Learning.
+&lt;/h1&gt;</description>
+        </item>
+        <item>
+        <title>基于深度学习的医学预测系统</title>
+        <link>https://mosfish.github.io/p/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%8C%BB%E5%AD%A6%E9%A2%84%E6%B5%8B%E7%B3%BB%E7%BB%9F/</link>
+        <pubDate>Wed, 24 Sep 2025 20:19:24 +0800</pubDate>
+        
+        <guid>https://mosfish.github.io/p/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%8C%BB%E5%AD%A6%E9%A2%84%E6%B5%8B%E7%B3%BB%E7%BB%9F/</guid>
+        <description>&lt;h1 id=&#34;怎么全是深度学习&#34;&gt;怎么全是深度学习
+&lt;/h1&gt;&lt;p&gt;想不到大四这门实习课还真有点东西，要么去企业干活，要么和其他人员做research，由于组里面朋友做过ai医学影像的工作，而我是属于什么都可以的，因此选择了医学预测系统，因为可以真真切切的见到患者的数据，弥足珍贵的体验。&lt;/p&gt;
+&lt;h2 id=&#34;论文基础学习&#34;&gt;论文基础学习
+&lt;/h2&gt;&lt;p&gt;基于参考论文， 本周工作是阅读这几篇论文、选其中1~2个精读并复现论文，等待之后拿到数据与计算资源再说。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Medical Image Computing and Computer Assisted Intervention – MICCAI 2023&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Multimodal Optimal Transport-based Co-Attention Transformer with Global Structure Consistency for Survival Prediction&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Clinical-BERT: Vision-Language Pre-training for Radiograph Diagnosis and Reports Generation&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MEDFuse: Multimodal EHR Data Fusion with Masked Lab-Test Modeling and Large Language Models&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MedFuse: Multi-modal fusion with clinical time-series data and chest X-ray images&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GLoRIA: A Multimodal Global-Local Representation Learning Framework for Label-efficient Medical Image Recognition&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;VBridge: Connecting the Dots Between Features and Data to Explain Healthcare Models&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;medical-image-computing-and-computer-assisted-intervention--miccai-2023&#34;&gt;Medical Image Computing and Computer Assisted Intervention – MICCAI 2023
+&lt;/h3&gt;&lt;img src=&#34;assets/image-20250924220315652.png&#34; alt=&#34;image-20250924220315652&#34; style=&#34;zoom: 50%;&#34; /&gt;
+</description>
+        </item>
+        <item>
         <title>徜徉在arxiv和bioarxiv的海洋里</title>
         <link>https://mosfish.github.io/p/%E5%BE%9C%E5%BE%89%E5%9C%A8arxiv%E5%92%8Cbioarxiv%E7%9A%84%E6%B5%B7%E6%B4%8B%E9%87%8C/</link>
         <pubDate>Sat, 20 Sep 2025 16:55:14 +0800</pubDate>
@@ -17,9 +66,6 @@
 &lt;/h1&gt;&lt;p&gt;上周正在摸鱼，突然看见导的zoom发了个邮件：“xxx invites you &amp;hellip;&amp;hellip; at 11:30&amp;quot;还以为改时间了，但是看见原本9点半的链接还没取消，于是开会那天ppt的理论部分还没做，9点半进去看看情况（万一选择这个时候开始呢），结果听到，”好的我们开始吧“。&lt;/p&gt;
 &lt;p&gt;于是，卒。&lt;/p&gt;
 &lt;p&gt;预料内的被批评了，毕竟ppt只有实验没有原理，被训也是正常。这周啥也不干了，好好读文献吧，要不然怎么在文章里tell(吹) a(牛) story(呢)，下周一个个汇报。此处我就简单写一些我认为相对有启发的内容。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;0924更新&lt;/strong&gt;，其实算是找了一堆没啥用的SOTA文章汇报（最起码对现在的研究没啥用），一周读了30篇论文。刚才我和老师大眼瞪小眼。建议去读：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;mamba gnn, long protein seq, long molecule, long-range gnn, long-range attention&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;a-hyperbolic-discrete-diffusion-3d-rna-inverse-folding-model-for-functional-rna-design&#34;&gt;A Hyperbolic Discrete Diffusion 3D RNA Inverse Folding Model for functional RNA design
 &lt;/h2&gt;&lt;p&gt;开幕雷击，这是一篇刊，快50页，读死我了。简称这个为RIdiffusion吧。&lt;/p&gt;
 &lt;h3 id=&#34;abstractintroduction&#34;&gt;Abstract&amp;amp;Introduction
@@ -8123,29 +8169,26 @@ $$&lt;p&gt;
 </description>
         </item>
         <item>
-        <title>记一次话剧主角经历</title>
-        <link>https://mosfish.github.io/p/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%AF%9D%E5%89%A7%E4%B8%BB%E8%A7%92%E7%BB%8F%E5%8E%86/</link>
+        <title>在聚光灯下</title>
+        <link>https://mosfish.github.io/p/%E5%9C%A8%E8%81%9A%E5%85%89%E7%81%AF%E4%B8%8B/</link>
         <pubDate>Sun, 08 Dec 2024 12:25:21 +0800</pubDate>
         
-        <guid>https://mosfish.github.io/p/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%AF%9D%E5%89%A7%E4%B8%BB%E8%A7%92%E7%BB%8F%E5%8E%86/</guid>
-        <description>&lt;img src="https://mosfish.github.io/p/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%AF%9D%E5%89%A7%E4%B8%BB%E8%A7%92%E7%BB%8F%E5%8E%86/12.jpg" alt="Featured image of post 记一次话剧主角经历" /&gt;&lt;h1 id=&#34;坎坷而深刻的舞台体验&#34;&gt;坎坷而深刻的舞台体验
+        <guid>https://mosfish.github.io/p/%E5%9C%A8%E8%81%9A%E5%85%89%E7%81%AF%E4%B8%8B/</guid>
+        <description>&lt;img src="https://mosfish.github.io/p/%E5%9C%A8%E8%81%9A%E5%85%89%E7%81%AF%E4%B8%8B/12.jpg" alt="Featured image of post 在聚光灯下" /&gt;&lt;h1 id=&#34;记一次话剧主角的经历&#34;&gt;记一次话剧主角的经历
 &lt;/h1&gt;&lt;p&gt;之前一直喜欢看剧，话剧、舞台剧、音乐剧、交响音乐会都有涉及，不过个人更喜欢音乐剧一些，从法红与黑、法扎、莫里哀（明年订票去），到德扎、伊丽莎白、蝴蝶梦，几乎看了个遍，自学了一丢丢德语、在学校学了法语，不为别的，就为了看剧；相反，话剧的兴趣可能没那么大。&lt;/p&gt;
 &lt;div align=center&gt;&lt;img src=&#34;16.jpg&#34; width=200/&gt;&lt;img src=&#34;17.jpg&#34; width=200/&gt;&lt;img src=&#34;19.jpg&#34; width=200/&gt;&lt;/div&gt;
 &lt;div align=center&gt;&lt;img src=&#34;20.jpg&#34; width=200/&gt;&lt;img src=&#34;21.jpg&#34; width=200/&gt;&lt;img src=&#34;22.jpg&#34; width=200/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;最近的汇总，被门票爆金币了&lt;/font&gt;&lt;/center&gt;
 &lt;h2 id=&#34;偶然进入话剧社&#34;&gt;偶然进入话剧社
-&lt;/h2&gt;&lt;p&gt;进入这个地方的原因多种多样，有为了扩(ren)大(shi)社(mei)交(zi)的，有喜欢搞剧的，像我这种陪好兄弟去玩结果兄弟被刷了、我莫名其妙的被录进去的还是蛮少见的。整体氛围活泼，只不过好像老东西和新一届有点矛盾，我也不想掺和。&lt;/p&gt;
-&lt;div align=center&gt;&lt;img src=&#34;18.jpg&#34; width=300/&gt;&lt;/div&gt;
-&lt;center&gt;&lt;font size=2&gt;第一次见面&lt;/font&gt;&lt;/center&gt;
+&lt;/h2&gt;&lt;p&gt;进入这个地方的原因多种多样，有为了扩(ren)大(shi)社(mei)交(zi)的，有喜欢搞剧的，像我这种陪好兄弟去玩结果兄弟被刷了、我莫名其妙的被录进去的还是蛮少见的。&lt;/p&gt;
 &lt;h2 id=&#34;主角竟是我&#34;&gt;主角竟是我？
 &lt;/h2&gt;&lt;p&gt;作为完全零经验小白，被迫出演《控方证人》的威尔爵士，链接https://www.bilibili.com/video/BV1Rb4y1371f&lt;/p&gt;
 &lt;p&gt;一直想着结束后说点啥感想，恰逢一周年吧，又看了看自己演的话剧的录播，其实感触颇多。记得学姐说：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;“你可以出师啦”&lt;/p&gt;&lt;/blockquote&gt;
-&lt;p&gt;是吗？或许是吧，一个没有经验的小白，坐排天天挨骂、念台词被各种批斗；为了话剧放弃了许多，最可惜的莫过于时间不足先是在无人机队招新时中途退出，再是放弃了智能车队验收，没有办法，没有资格去参加一些比赛了。不过想了想也还不错，现在很多比赛费半天劲就当玩玩得了，投入太多精力也没人认，真就是路边一条了。&lt;/p&gt;
+&lt;p&gt;是吗？或许是吧，一个没有经验的小白，坐排天天挨骂、念台词被各种批斗；为了话剧放弃了许多，不过想了想也还不错，虽然错过了很多机会，想来现在很多比赛费半天劲也就当玩玩，不如去试试research，这段经历倒是给我启发。&lt;/p&gt;
 &lt;div align=center&gt;&lt;img src=&#34;3.jpg&#34; width=200/&gt;&lt;img src=&#34;6.jpg&#34; width=200/&gt;&lt;img src=&#34;7.jpg&#34; width=200/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;排练的碎片&lt;/font&gt;&lt;/center&gt;
-&lt;p&gt;&lt;strong&gt;后悔吗？不后悔。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;多少日夜，多少排练，多少绕口令，回忆涌上心头，可惜曾经的朋友慢慢四散而去。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;学好声韵辨四声，阴阳上去要分明，
@@ -8158,18 +8201,20 @@ $$&lt;p&gt;
 嘴撮虚学寻徐剧，齐齿衣优摇业英。
 抵颚恩音烟弯稳，穿鼻昂迎中拥生。
 咬紧字头归字尾，不难达到纯和清。&lt;/p&gt;&lt;/blockquote&gt;
-&lt;p&gt;仍记得定妆照那天赶完ddl就睡了三个小时；早上穿着戏服上课当显眼包，中午没吃饭就去拍照，结果因为负责的同学没有提前对接被赶了出来。下午提前做完实验赶到现场，依稀记得女搭档们忙前忙后给我化妆的样子，仍然记得学姐顶着发烧来给我们拍照&amp;hellip;&amp;hellip;太多太多瞬间。&lt;/p&gt;
+&lt;p&gt;仍记得定妆照那天赶完ddl就睡了三个小时；早上穿着戏服上课当显眼包，下午提前做完实验赶到现场，依稀记得女搭档们忙前忙后给我化妆的样子，仍然记得学姐顶着发烧来给我们拍照&amp;hellip;&amp;hellip;太多太多瞬间。&lt;/p&gt;
 &lt;div align=center&gt;&lt;img src=&#34;5.jpg&#34; width=200/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;这是哪位呢？我不认识&lt;/font&gt;&lt;/center&gt;
 &lt;h2 id=&#34;临门一脚&#34;&gt;临门一脚
-&lt;/h2&gt;&lt;p&gt;前几天晚上最后一次联排，相当于演习。整体很仓促，大家都容易着急；导演也急，期待最后一天能超常发挥。&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;前几天晚上最后一次联排，相当于演习。整体很仓促，大家都容易着急，演话剧最容易出现的问题就是急或者快；期待最后一天能超常发挥。&lt;/p&gt;
 &lt;div align=center&gt;&lt;img src=&#34;4.jpg&#34; width=300/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;啊？&lt;/font&gt;&lt;/center&gt;
 &lt;p&gt;早上8点半到活动中心搬东西，我一个“老头”还得一步一步从那里把门扛到新传剧场，倒也不能说激动，主要还是紧张&amp;hellip;&lt;/p&gt;
 &lt;div align=center&gt;&lt;img src=&#34;1.jpg&#34; width=135/&gt;&lt;img src=&#34;2.jpg&#34; width=135/&gt;&lt;img src=&#34;10.jpg&#34; width=120/&gt;&lt;img src=&#34;14.jpg&#34; width=120/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;忙到乱成一团了&lt;/font&gt;&lt;/center&gt;
 &lt;h2 id=&#34;在聚光灯下&#34;&gt;在聚光灯下
-&lt;/h2&gt;&lt;p&gt;演出很顺利，起初面对聚光灯手抖的不行，逐渐到泰然自若、享受掌声，这是这段时间的成长。剧组每个人都很辛苦，在这短短的一个月每个人都舍弃了不少，但是收获的更多。从此，面对台下熙熙攘攘的观众，你是否有挺胸谈吐的决心？反正我还是害怕嘿嘿。&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;演出很顺利，起初面对聚光灯手抖的不行，逐渐到泰然自若、享受掌声，这是这段时间的成长。剧组每个人都很辛苦，在这短短的一个月每个人都舍弃了不少，但是收获的更多。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;从此，面对台下熙熙攘攘的观众，你是否有挺胸谈吐的决心？反正我还是害怕，嘿嘿。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div align=center&gt;&lt;img src=&#34;12.jpg&#34; width=300/&gt;&lt;img src=&#34;15.jpg&#34; width=300/&gt;&lt;/div&gt;
 &lt;center&gt;&lt;font size=2&gt;场照、合影与谢幕&lt;/font&gt;&lt;/center&gt;
 &lt;blockquote&gt;

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Technical Blogs on Mosfish&#39;s Blog</title>
+        <link>https://mosfish.github.io/categories/deeplearning/</link>
+        <description>Recent content in Technical Blogs on Mosfish&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Xiangyu Wen</copyright>
+        <lastBuildDate>Wed, 24 Sep 2025 20:19:34 +0800</lastBuildDate><atom:link href="https://mosfish.github.io/categories/deeplearning/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>MITx MicroMasters in Statistics and Data Science</title>
+        <link>https://mosfish.github.io/p/mitx-micromasters-in-statistics-and-data-science/</link>
+        <pubDate>Wed, 24 Sep 2025 20:19:34 +0800</pubDate>
+        
+        <guid>https://mosfish.github.io/p/mitx-micromasters-in-statistics-and-data-science/</guid>
+        <description>&lt;h1 id=&#34;start-my-micromasters-program&#34;&gt;Start my MicroMasters Program
+&lt;/h1&gt;&lt;p&gt;I was recommended this program to enhance my DataScience basics by my friends. I wanna begin with &lt;strong&gt;MITx 6.86x Machine Learning with Python: from Linear Models to Deep Learning.&lt;/strong&gt;&lt;/p&gt;
+&lt;img src=&#34;assets/image-20250924214237190.png&#34; alt=&#34;image-20250924214237190&#34; style=&#34;zoom: 25%;&#34; /&gt;
+&lt;h1 id=&#34;mitx-686x-machine-learning-with-python-from-linear-models-to-deep-learning&#34;&gt;MITx 6.86x Machine Learning with Python: from Linear Models to Deep Learning.
+&lt;/h1&gt;</description>
+        </item>
+        <item>
+        <title>基于深度学习的医学预测系统</title>
+        <link>https://mosfish.github.io/p/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%8C%BB%E5%AD%A6%E9%A2%84%E6%B5%8B%E7%B3%BB%E7%BB%9F/</link>
+        <pubDate>Wed, 24 Sep 2025 20:19:24 +0800</pubDate>
+        
+        <guid>https://mosfish.github.io/p/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%8C%BB%E5%AD%A6%E9%A2%84%E6%B5%8B%E7%B3%BB%E7%BB%9F/</guid>
+        <description>&lt;h1 id=&#34;怎么全是深度学习&#34;&gt;怎么全是深度学习
+&lt;/h1&gt;&lt;p&gt;想不到大四这门实习课还真有点东西，要么去企业干活，要么和其他人员做research，由于组里面朋友做过ai医学影像的工作，而我是属于什么都可以的，因此选择了医学预测系统，因为可以真真切切的见到患者的数据，弥足珍贵的体验。&lt;/p&gt;
+&lt;h2 id=&#34;论文基础学习&#34;&gt;论文基础学习
+&lt;/h2&gt;&lt;p&gt;基于参考论文， 本周工作是阅读这几篇论文、选其中1~2个精读并复现论文，等待之后拿到数据与计算资源再说。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Medical Image Computing and Computer Assisted Intervention – MICCAI 2023&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Multimodal Optimal Transport-based Co-Attention Transformer with Global Structure Consistency for Survival Prediction&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Clinical-BERT: Vision-Language Pre-training for Radiograph Diagnosis and Reports Generation&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MEDFuse: Multimodal EHR Data Fusion with Masked Lab-Test Modeling and Large Language Models&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MedFuse: Multi-modal fusion with clinical time-series data and chest X-ray images&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GLoRIA: A Multimodal Global-Local Representation Learning Framework for Label-efficient Medical Image Recognition&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;VBridge: Connecting the Dots Between Features and Data to Explain Healthcare Models&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;medical-image-computing-and-computer-assisted-intervention--miccai-2023&#34;&gt;Medical Image Computing and Computer Assisted Intervention – MICCAI 2023
+&lt;/h3&gt;&lt;img src=&#34;assets/image-20250924220315652.png&#34; alt=&#34;image-20250924220315652&#34; style=&#34;zoom: 50%;&#34; /&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
