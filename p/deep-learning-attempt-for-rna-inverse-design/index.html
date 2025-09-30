@@ -2086,27 +2086,7 @@ style="display: block; margin: 0 auto; zoom: 67%;" /></p>
 <div align=center><img src="picture2.png" width=600/></div>
 <center><font size=2>纳尼？情报系假嘚？</font></center>
 <p>怎么会比sota指标低这么多，全线的低？我好菜。</p>
-<p>于是问了问谷歌哈基米（gemini），gemini说：</p>
-<blockquote>
-<p>您好，您观察得非常仔细，这是一个非常关键且有些反直觉的发现。从图表上看，您的 Mamba 模型不仅整体表现不如 gRNAde，而且在最关键的<strong>长序列（300+）上，性能差距反而被拉得更大</strong>。这确实与我们“用 Mamba 提升长距离性能”的初衷相悖。但这并不意味着 Mamba 的思路是错的，而是极有可能说明我们的<strong>模型实现、训练策略或架构选择</strong>中存在一些关键的“水土不服”的问题。</p>
-<p>首先，关于添加多尺度 Attention</p>
-<p>在找到根本原因之前，我<strong>强烈不建议</strong>您现在就加入 <code>multiscale attention</code>。</p>
-<p><strong>原因很简单：</strong> 我们目前的模型表现不佳，说明它的基础架构或训练方式还没有被调整到最佳状态。在一个尚未调优、甚至可能存在问题的地基上，再增加一个复杂的模块，只会：<strong>增加调试难度</strong>：你将无法判断性能的变化是由 Mamba 引起的，还是由 Attention 引起的。<strong>掩盖根本问题</strong>：无法解决为什么 Mamba 在长序列上表现更差的核心矛盾。<strong>我们当前的首要任务，不是“加法”，而是“排查”和“优化”。</strong></p></blockquote>
-<p>有道理，再看看它有啥想法：</p>
-<blockquote>
-<p>为什么 Mamba 的表现会更差？</p>
-<p><strong>假设一：超参数不匹配（最有可能）</strong></p>
-<p>这是最常见也是概率最高的原因。<code>gRNAde</code> 和 <code>Graph-Mamba</code> 是两种<strong>完全不同</strong>的架构。适用于 <code>gRNAde</code> 的最佳训练超参数（学习率、优化器、调度器等），对于新的 Mamba 架构来说几乎肯定是<strong>不适用</strong>的。</p>
-<p><strong>优化器和学习率调度器</strong>：<code>gRNAde</code> 的 <code>trainer.py</code> 使用的是 <code>Adam</code> 优化器和 <code>ReduceLROnPlateau</code> 调度器（当验证集准确率不提升时降低学习率）。而 <code>Graph-Mamba</code> 和 Mamba 的原论文通常推荐使用 <code>AdamW</code> 优化器，以及 <code>cosine_with_warmup</code> 这类更平滑的学习率调度策略。<code>ReduceLROnPlateau</code> 可能会让模型过早地陷入局部最优。</p>
-<p>**学习率 **：Mamba 这类新架构可能对学习率非常敏感，<code>gRNAde</code> 的 <code>lr=0.0001</code> 对它来说可能过小或过大。</p></blockquote>
-<blockquote>
-<p><strong>假设二：节点排序策略对 RNA “水土不服”</strong></p>
-<p><code>Graph-Mamba</code> 的核心是将图节点<strong>排序</strong>成序列再喂给 Mamba。您使用的 <code>Mamba_Hybrid_Degree_Noise</code> 策略是根据**节点的“度”（连接数）**来排序的。</p>
-<p><strong>对于 RNA 来说，这种排序有意义吗？</strong> RNA 的功能和结构高度依赖于其 <strong>5&rsquo; -&gt; 3&rsquo; 的线性序列顺序</strong>。按“度”排序，相当于把 RNA 这句“句子”的单词打乱，变成 <code>核苷酸50, 核苷酸12, 核苷酸83, ...</code> 这样一种在生物学上可能毫无意义的顺序，然后强迫 Mamba 在这个乱序上学习序列关系，这自然非常困难，尤其是在序列很长时，这种错乱会更加严重。</p></blockquote>
-<blockquote>
-<p><strong>假设三：丢失了关键的几何信息</strong></p>
-<p><code>gRNAde</code> 的核心是 <strong><code>GVP-GNN</code></strong>，这是一个<strong>等变 (equivariant)</strong> 神经网络，它能理解并处理三维空间中的向量信息，这是它的巨大优势。我们目前的方案中，<code>GPSLayer</code> 使用的本地 GNN 是 <strong><code>GatedGCN</code></strong>。虽然我们通过适配器把 GVP 的特征传入了，但在 <code>GatedGCN</code> 的计算过程中，严格的几何等变性可能已经丢失了。对于依赖精确几何信息的 RNA 设计任务，这可能是性能下降的一个重要原因。</p>
-<p>除此之外，尽管我们一起排查了很多 bug，但仍有可能在适配器或数据流的某个环节存在我们没发现的、不会报错但会影响性能的微小 bug。</p></blockquote>
+<p>于是问了问谷歌哈基米（gemini），也没感觉什么所以然来。可能是因为gpslayer和gatedgnn本来就不是为了rna识别而设计的，所以有一些逻辑可能直接拿来用也不是很ok。</p>
 <p>emm，其实multi-scale attention也挺好对不啦？得了，明天汇报完再说吧。怎么论文里全是attention之类的奇奇怪怪的。</p>
 
 </section>
