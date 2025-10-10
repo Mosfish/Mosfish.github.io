@@ -16,14 +16,6 @@
         <description>&lt;img src="https://mosfish.github.io/categories/ai4s/NC.png" alt="Featured image of post AI4S" /&gt;</description>
         </item>
         <item>
-        <title>Deeplearning</title>
-        <link>https://mosfish.github.io/categories/deeplearning/</link>
-        <pubDate>Wed, 24 Sep 2025 20:19:34 +0800</pubDate>
-        
-        <guid>https://mosfish.github.io/categories/deeplearning/</guid>
-        <description>&lt;img src="https://mosfish.github.io/categories/deeplearning/icl.png" alt="Featured image of post Deeplearning" /&gt;</description>
-        </item>
-        <item>
         <title>5GC</title>
         <link>https://mosfish.github.io/categories/5gc/</link>
         <pubDate>Fri, 23 May 2025 12:45:04 +0800</pubDate>
@@ -38,6 +30,14 @@
         
         <guid>https://mosfish.github.io/categories/life/</guid>
         <description>&lt;img src="https://mosfish.github.io/categories/life/life.jpg" alt="Featured image of post Life" /&gt;</description>
+        </item>
+        <item>
+        <title>Deeplearning</title>
+        <link>https://mosfish.github.io/categories/deeplearning/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://mosfish.github.io/categories/deeplearning/</guid>
+        <description>&lt;img src="https://mosfish.github.io/categories/deeplearning/icl.png" alt="Featured image of post Deeplearning" /&gt;</description>
         </item>
         
     </channel>

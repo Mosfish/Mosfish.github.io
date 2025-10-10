@@ -6,19 +6,6 @@
         <description>Recent content in Deeplearning on Mosfish&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <copyright>Xiangyu Wen</copyright>
-        <lastBuildDate>Wed, 24 Sep 2025 20:19:34 +0800</lastBuildDate><atom:link href="https://mosfish.github.io/categories/deeplearning/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>MITx MicroMasters in Statistics and Data Science</title>
-        <link>https://mosfish.github.io/p/mitx-micromasters-in-statistics-and-data-science/</link>
-        <pubDate>Wed, 24 Sep 2025 20:19:34 +0800</pubDate>
-        
-        <guid>https://mosfish.github.io/p/mitx-micromasters-in-statistics-and-data-science/</guid>
-        <description>&lt;h1 id=&#34;start-my-micromasters-program&#34;&gt;Start my MicroMasters Program
-&lt;/h1&gt;&lt;p&gt;I was recommended this program to enhance my DataScience basics by my friends. I wanna begin with &lt;strong&gt;MITx 6.86x Machine Learning with Python: from Linear Models to Deep Learning.&lt;/strong&gt;&lt;/p&gt;
-&lt;img src=&#34;assets/image-20250924214237190.png&#34; alt=&#34;image-20250924214237190&#34; style=&#34;zoom: 25%;&#34; /&gt;
-&lt;h1 id=&#34;mitx-686x-machine-learning-with-python-from-linear-models-to-deep-learning&#34;&gt;MITx 6.86x Machine Learning with Python: from Linear Models to Deep Learning.
-&lt;/h1&gt;</description>
-        </item>
-        
+        <copyright>Xiangyu Wen</copyright><atom:link href="https://mosfish.github.io/categories/deeplearning/index.xml" rel="self" type="application/rss+xml" />
     </channel>
 </rss>
