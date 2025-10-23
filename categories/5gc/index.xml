@@ -1054,7 +1054,8 @@
 &lt;hr&gt;
 &lt;h4 id=&#34;交叉编译&#34;&gt;交叉编译
 &lt;/h4&gt;&lt;blockquote&gt;
-&lt;p&gt;交叉编译指利用不同的平台进行处理，并把安装或编译好的东西转移到所需平台。这种思想不仅仅用于以下案例，可以用到很多地方。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;交叉编译指利用不同的平台进行处理，并把安装或编译好的东西转移到所需平台。这种思想不仅仅用于以下案例，可以用到很多地方。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;如果不按照刚才说法设置镜像代理的话，编译过程中也有可能遇到&lt;code&gt;golang bullseye&lt;/code&gt;报错，&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;=&amp;gt; ERROR [internal] load metadata for docker.io/library/golang: 21.5s ------ &amp;gt; [internal] load metadata for docker.io/library/golang:1.21.8-bullseye&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;如果实在不打算使用镜像源，可以利用&lt;strong&gt;交叉编译&lt;/strong&gt;在&lt;strong&gt;主机windows&lt;/strong&gt;挂梯子下载docker desktop软件，下载好后在上面搜索golang，选&lt;strong&gt;1.24.0-bullseye&lt;/strong&gt;（我用的&lt;strong&gt;1.23.6&lt;/strong&gt;-bullseye，这俩都行），点击&lt;strong&gt;pull&lt;/strong&gt;，即可把包下载到电脑里。&lt;/p&gt;

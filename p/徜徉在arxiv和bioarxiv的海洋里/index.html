@@ -59,8 +59,8 @@
                     
                     
                         
-                        <img src="/img/head_hu_c416b63add1b23cc.webp" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                        <img src="/img/head_hu_6dccde155e9615c8.gif" width="300"
+                            height="275" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
                 </a>
@@ -413,14 +413,16 @@
 <li><strong>Background:</strong> revolutionary opportunities for diverse RNA-based biotechnologies and biomedical applications.</li>
 </ul>
 <blockquote>
-<p>primary goal of RNA inverse folding is to design nucleotide sequences that can fold into a given RNA secondary or tertiary structure.</p></blockquote>
+<p>primary goal of RNA inverse folding is to design nucleotide sequences that can fold into a given RNA secondary or tertiary structure.</p>
+</blockquote>
 <ul>
 <li><strong>Challenge:</strong> limited availability of experimentally derived 3D structural data and unique characteristics of RNA 3D structures; existing tools either focus on 2D inverse folding tasks or learn limited 3D structural features from experimentally determined and predicted 3D structure datasets for the 3D inverse folding problem.</li>
 <li><strong>High-resolution RNA structures</strong> are significantly <strong>less</strong> common compared to those of proteins.</li>
 </ul>
 <p><strong>RIdiffusion</strong>, a hyperbolic denoising diffusion generative RNA inverse folding model.</p>
 <blockquote>
-<p>RIdiffusion efficiently recovers the distribution of nucleotides for targeted RNA 3D structures based on limited training samples using a discrete diffusion model.</p></blockquote>
+<p>RIdiffusion efficiently recovers the distribution of nucleotides for targeted RNA 3D structures based on limited training samples using a discrete diffusion model.</p>
+</blockquote>
 <p>事实上背景一般都是车轱辘话，但是不同的文章聚焦的challenge不一样。本文章最令我印象深刻的地方在于其利用geometric deep learning和discrete diffusion model结合起来，而且评估的很细致，工作量很够。</p>
 <ul>
 <li>structure based.</li>
@@ -431,7 +433,8 @@
 <p>之后通过生物学知识: RNA structures exhibit inherent hierarchical organization <strong>(e.g., from base-paring, secondary structure elements and remote pseudoknots to complex 3D shapes)<strong>引出</strong>hyperbolic space.</strong></p>
 <p>为什么要提及这个呢？因为</p>
 <blockquote>
-<p>compared to Euclidean space, a hyperbolic distance better captures molecular differences and improve performance in small molecule generation tasks</p></blockquote>
+<p>compared to Euclidean space, a hyperbolic distance better captures molecular differences and improve performance in small molecule generation tasks</p>
+</blockquote>
 <p>也就是说这个hb比euc更能展现结构特征，或者说，更能体现subtle structural的区别。作者通过以下这张图来介绍：</p>
 <img src="assets/image-20250923222419058.png" alt="image-20250923222419058" style="zoom:50%; display: block; margin: 0 auto;" />
 <p>我们其实重点关注A,D就行，A是变换的一个图示结构，D是rna结构铺在hb空间里的形态，简而言之，不同chain（或者backbone）分开了，也就更好捕捉特征。</p>
@@ -446,13 +449,15 @@
 <h4 id="datasets-and-setup">Datasets and Setup
 </h4><p>实际上我更在意作者如何<strong>split</strong>的？</p>
 <blockquote>
-<p>We followed the same splitting methods outlined in RDesign to ensure a high-quality dataset with only experimentally derived structures, which consists of 1773 structures for training, 221 structures for validation, and 223 structures for testing in an 8:1:1 ratio.</p></blockquote>
+<p>We followed the same splitting methods outlined in RDesign to ensure a high-quality dataset with only experimentally derived structures, which consists of 1773 structures for training, 221 structures for validation, and 223 structures for testing in an 8:1:1 ratio.</p>
+</blockquote>
 <p>这也是按照<strong>8:1:1</strong>分的，所以我现在遇到的事情思考的确实没啥毛病。</p>
 <p>除此之外，为了评价<strong>泛化能力，作者用PSI-CD-HIT，基于nucleotide similarity</strong>来cluster数据 , 并setting similarity thresholds of 0.8, 0.9, and 1.0。</p>
 <h4 id="evaluation-metrics">Evaluation Metrics
 </h4><p>本文的评估标准我很感兴趣，除了我们通常用的RR，还提出了Macro-F1 score，我贴个引用：</p>
 <blockquote>
-<p>The Macro-F1 score is used to assess the accuracy and comprehensiveness of the model in predicting protein or RNA sequences, particularly in cases where the distribution of different letter residues is imbalanced, by evaluating the Macro-F1 score for each residue in the sequence.</p></blockquote>
+<p>The Macro-F1 score is used to assess the accuracy and comprehensiveness of the model in predicting protein or RNA sequences, particularly in cases where the distribution of different letter residues is imbalanced, by evaluating the Macro-F1 score for each residue in the sequence.</p>
+</blockquote>
 <p>叽里咕噜唧唧歪歪说什么呢，没看懂，太生物学了。和我的3.98rmb/h的炼丹炉说去吧。
 </p>
 $$
@@ -465,11 +470,13 @@ $$<p>
 <h3 id="results">Results
 </h3><p>其实不用看就知道，肯定这好那好嘛，要不然发出来干啥。不过我注意到作者：</p>
 <blockquote>
-<p>we divided the dataset of seq-0.8 into short (&lt;50nt), medium (50~100nt), and long (&gt;100nt)</p></blockquote>
+<p>we divided the dataset of seq-0.8 into short (&lt;50nt), medium (50~100nt), and long (&gt;100nt)</p>
+</blockquote>
 <p>嗯？这样划分吗？其实也行，和RiboDiffusion的划分一致。</p>
 <p>至于以下的我贴个原文，其实云里雾里的：</p>
 <blockquote>
-<p>The novelty of generative designs can be viewed from two perspectives: <strong>sequence novelty and physicochemical properties novelty.</strong> In our case, sequence and physicochemical properties (derived from sequence) novelty are important in RNA 3D inverse folding. Indeed, sequence features such as physicochemical properties play a crucial role in functional RNA design. For instance, it was reported that natural RNAs show privileged physicochemical property space which is related to their biological functions. Other sequence features like GC content are important properties related to developability of RNA molecules. Given the nature of one-to-many relationship between the targeted RNA structure and its possible sequences, the novelty and diversity of generated sequences are important considerations for improving physicochemical properties of the designed sequences.</p></blockquote>
+<p>The novelty of generative designs can be viewed from two perspectives: <strong>sequence novelty and physicochemical properties novelty.</strong> In our case, sequence and physicochemical properties (derived from sequence) novelty are important in RNA 3D inverse folding. Indeed, sequence features such as physicochemical properties play a crucial role in functional RNA design. For instance, it was reported that natural RNAs show privileged physicochemical property space which is related to their biological functions. Other sequence features like GC content are important properties related to developability of RNA molecules. Given the nature of one-to-many relationship between the targeted RNA structure and its possible sequences, the novelty and diversity of generated sequences are important considerations for improving physicochemical properties of the designed sequences.</p>
+</blockquote>
 <p>涉及生物学知识比较多，还有类似于理化特性的。</p>
 <p>之后抽样进行physicochemical properties space的评估。就是说三个部分应该有区别。</p>
 <img src="assets/image-20250923234501726.png" alt="image-20250923234501726" style="zoom: 33%; display: block; margin: 0 auto;" />
@@ -481,11 +488,13 @@ $$<p>
 </ul>
 <p>事实上作者的观点是，光分析rna不行，还得去看有关系的complexes。</p>
 <blockquote>
-<p>our method incorporates protein features extracted by protein language model (e.g., ESM-2)</p></blockquote>
+<p>our method incorporates protein features extracted by protein language model (e.g., ESM-2)</p>
+</blockquote>
 <p>没看懂，为什么要用蛋白质的feature来拟合rna？宛宛类卿是吗？</p>
 <p>To address bio-logical complexity of protein-RNA interactions, propose a distance-aware filtering for local features from protein representation.</p>
 <blockquote>
-<p>a high-affinity design framework that combines our CARD with an affinity evaluation model.</p></blockquote>
+<p>a high-affinity design framework that combines our CARD with an affinity evaluation model.</p>
+</blockquote>
 <p>多了个evaluation吗？有点意思。</p>
 <p>Final goal: produce high-affinity RNA sequences</p>
 <h3 id="introduction">Introduction
@@ -508,7 +517,8 @@ $$<p>
 <h4 id="蚊香小课堂">蚊香小课堂
 </h4><p>作者提到inverse folding的发展与背景：</p>
 <blockquote>
-<p>RNA design aims to generate sequences that fold into <strong>predefined structures.</strong> Early methods focused on <strong>secondary structure optimization</strong>, using <strong>thermodynamic parameters</strong> and <strong>energy minimization</strong>. Tools like <strong>RNAfold</strong> predict RNA secondary structures based on the <strong>minimum free energy principle</strong>. As understanding of RNA structure has advanced, focus has shifted to <strong>complex tertiary structure-based design</strong> due to RNA’s high conformational flexibility, which challenges traditional thermodynamic methods. Recent deep learning approaches for RNA tertiary structure design include <strong>gRNAde, which utilizes geometric deep learning and graph neural networks to generate RNA sequences</strong>; <strong>RiboDiffusion</strong>, a diffusion model for inverse folding leveraging RNA backbone structures; <strong>RDesign</strong>, which employs a data-efficient learning framework with contrastive learning for tertiary structures; and <strong>Rhodesign</strong>, focusing on RNA aptamer design by guiding sequence generation through structural predictions.</p></blockquote>
+<p>RNA design aims to generate sequences that fold into <strong>predefined structures.</strong> Early methods focused on <strong>secondary structure optimization</strong>, using <strong>thermodynamic parameters</strong> and <strong>energy minimization</strong>. Tools like <strong>RNAfold</strong> predict RNA secondary structures based on the <strong>minimum free energy principle</strong>. As understanding of RNA structure has advanced, focus has shifted to <strong>complex tertiary structure-based design</strong> due to RNA’s high conformational flexibility, which challenges traditional thermodynamic methods. Recent deep learning approaches for RNA tertiary structure design include <strong>gRNAde, which utilizes geometric deep learning and graph neural networks to generate RNA sequences</strong>; <strong>RiboDiffusion</strong>, a diffusion model for inverse folding leveraging RNA backbone structures; <strong>RDesign</strong>, which employs a data-efficient learning framework with contrastive learning for tertiary structures; and <strong>Rhodesign</strong>, focusing on RNA aptamer design by guiding sequence generation through structural predictions.</p>
+</blockquote>
 <p>从热力学参数和能量最小化原理，到基于深度学习来预测rna。其实可以结合吧？</p>
 <h3 id="methods">Methods
 </h3><p>作者的pipeline：</p>
@@ -643,7 +653,8 @@ $$<p>
 </h2><p>找到<strong>motivation</strong>了不？其实找到了，就是识别<strong>long</strong> rna sequence嘛，问题是我们的<strong>multiscale</strong>光这个不够，需要多看论文多找多想。</p>
 <p>其实本周算是找了一堆没啥用的SOTA文章汇报（最起码对现在的研究没啥用），一周读了二十来篇论文但是白白浪费时间（当然也有好处，最起码熟悉了背景）。刚才我和老师大眼瞪小眼，咋汇报的文献没啥idea启发嘞？因此导师建议去找：</p>
 <blockquote>
-<p><strong>mamba gnn, long protein seq, long molecule, long-range gnn, long-range attention</strong></p></blockquote>
+<p><strong>mamba gnn, long protein seq, long molecule, long-range gnn, long-range attention</strong></p>
+</blockquote>
 <p>那么加上<strong>attention is all you need</strong>这篇transformer的文章，和讲multiscale的文章，本周再来一轮汇报。其实找到了这些，但是有作用的不多。</p>
 <p><img src="assets/image-20250930195319838.png" 
 alt="image-20250930195319838" 
