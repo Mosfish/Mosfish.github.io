@@ -1833,15 +1833,21 @@
 <h3 id="graph-mamba">Graph-Mamba
 </h3><h4 id="mamba">Mamba
 </h4><p>Different from RNN, the SSM(State Space Model) will &ldquo;remember&rdquo; the graph or text interactions better.</p>
-<img src="assets/image-20251024161030234.png" alt="image-20251024161030234" style="zoom:50%;" />
-<img src="assets/image-20251024161045596.png" alt="image-20251024161045596" style="zoom:50%;" />
+<div align=center><img src="assets/image-20251024161030234.png" width=600/></div>
+<center><font size=2>SSM model structure</font></center>
+<div align=center><img src="assets/image-20251024161045596.png" width=600/></div>
+<center><font size=2>SSM architecture details</font></center>
 <p>For it promising performance,</p>
-<img src="assets/image-20251024161132071.png" alt="image-20251024161132071" style="zoom: 67%;" /> 
+<div align=center><img src="assets/image-20251024161132071.png" width=600/></div>
+<center><font size=2>SSM performance comparison</font></center>
 <p>SSMs have rich theoretical properties but suffer from high computational cost and numerical instability. So HiPPO(High-order Polynomial Projection Operator) is proposed to optimize the SSM, as follows,</p>
-<img src="assets/image-20251024161322086.png" alt="image-20251024161322086" style="zoom:50%;" />
-<img src="assets/image-20251024161343746.png" alt="image-20251024161343746" style="zoom:50%;" />
+<div align=center><img src="assets/image-20251024161322086.png" width=600/></div>
+<center><font size=2>HiPPO framework</font></center>
+<div align=center><img src="assets/image-20251024161343746.png" width=600/></div>
+<center><font size=2>HiPPO optimization details</font></center>
 <p>Notably, it is developed into the S4 model, which shows its strong capability to capture long-range dependencies.</p>
-<img src="assets/image-20251024161334191.png" alt="image-20251024161334191" style="zoom:50%;" />
+<div align=center><img src="assets/image-20251024161334191.png" width=600/></div>
+<center><font size=2>S4 model capabilities</font></center>
 <h4 id="graph-mamba-towards-long-range-graph-sequence-modeling-withselective-state-spaces">Graph-Mamba: Towards Long-Range Graph Sequence Modeling withSelective State Spaces
 </h4><p>From the <strong>Graph-Mamba</strong>, we will know that,</p>
 <ul>
@@ -1864,12 +1870,16 @@
 <p>Optimization: Node Prioritization; Permutation-based Training.</p>
 </li>
 </ul>
-<img src="assets/image-20251024153623567.png" alt="image-20251024153623567" style="zoom:67%;" />
+<div align=center><img src="assets/image-20251024153623567.png" width=600/></div>
+<center><font size=2>Graph-Mamba architecture</font></center>
 <p>In the same way, we just follow the algorithm and replace the <code>gvpcov</code> layer to our <code>graphgpsMamba</code>.</p>
-<img src="assets/image-20251024154038508.png" alt="image-20251024154038508" style="zoom: 33%;" />
-<img src="assets/image-20251024154100968.png" alt="image-20251024154100968" style="zoom:50%;" />
+<div align=center><img src="assets/image-20251024154038508.png" width=600/></div>
+<center><font size=2>Algorithm implementation</font></center>
+<div align=center><img src="assets/image-20251024154100968.png" width=600/></div>
+<center><font size=2>GatedGCN and GraphGPS integration</font></center>
 <p>The code will load GatedGCN as MPNN and combine it with graphGPS then add mamba block. However, graphGPS, or more specifically, gatedGCN, is not proposed to model our RNA molecules. So in our test, it performs worse than baseline.</p>
-<img src="assets/image-20251024153639628.png" alt="image-20251024153639628" style="zoom:50%;" />
+<div align=center><img src="assets/image-20251024153639628.png" width=600/></div>
+<center><font size=2>Baseline comparison results</font></center>
 <h3 id="long-short-transformer-and-graph-long-short-transformer">Long-Short Transformer and Graph Long-Short Transformer
 </h3><p>We will learn from the article:</p>
 <p><strong>Long-Short Transformer: Effcient Transformers for Language and Vision</strong></p>
@@ -1888,24 +1898,32 @@
 <p>Aggregating Long-range and Short-term Attentions&amp;DualLN</p>
 </li>
 </ul>
-<img src="assets/image-20251024162239002.png" alt="image-20251024162239002" style="zoom: 67%;" />
+<div align=center><img src="assets/image-20251024162239002.png" width=600/></div>
+<center><font size=2>Long-Short Transformer architecture</font></center>
 <p>We then develop it into Long-short Graph Transformer, using <code>MultiGVPConv</code> for message passing, and sliding window for short attention, dynamic projection for long range. In the code, we mixed the edge features to node and processed the node scalar features, because the author&rsquo; s model from long-short transformer is 1D information for sentence modeling.</p>
-<img src="assets/image-20251024162251654.png" alt="image-20251024162251654" style="zoom:50%;" />
-<img src="assets/image-20251024162257996.png" alt="image-20251024162257996" style="zoom:50%;" />
+<div align=center><img src="assets/image-20251024162251654.png" width=600/></div>
+<center><font size=2>Long-short Graph Transformer implementation</font></center>
+<div align=center><img src="assets/image-20251024162257996.png" width=600/></div>
+<center><font size=2>Feature processing pipeline</font></center>
 <p>Unluckily, although it outperformed than any others in 200+ nts long range rna modeling, the short and medium range would drop down.</p>
 <h3 id="gat-gvp-long-short-graph-transformer">GAT-GVP long-short graph transformer
 </h3><p>According to Graph Attention Networks, we changed the short range to the GAT to capture the neighbor interactions, maintain the 3D information.</p>
-<img src="assets/image-20251024162817129.png" alt="image-20251024162817129" style="zoom:50%;" />
-<img src="assets/image-20251024162828711.png" alt="image-20251024162828711" style="zoom:50%;" />
+<div align=center><img src="assets/image-20251024162817129.png" width=600/></div>
+<center><font size=2>GAT-GVP architecture</font></center>
+<div align=center><img src="assets/image-20251024162828711.png" width=600/></div>
+<center><font size=2>GAT neighbor interaction mechanism</font></center>
 <h3 id="experiments">Experiments
 </h3><h4 id="learning-rate">Learning rate
-</h4><img src="assets/image-20251024162348404.png" alt="image-20251024162348404" style="zoom:50%;" />
+</h4><div align=center><img src="assets/image-20251024162348404.png" width=600/></div>
+<center><font size=2>Learning rate comparison</font></center>
 <p>We use our graph transformer which just adds a transformer into the layer, training with different lr, and finds out that when lr=0.0002, it will be the best.</p>
 <h4 id="comparison">Comparison
 </h4><p>We trained with seed0, and,</p>
-<img src="assets/image-20251024163430577.png" alt="image-20251024163430577" style="zoom: 67%;" /> 
+<div align=center><img src="assets/image-20251024163430577.png" width=600/></div>
+<center><font size=2>Training results with seed0</font></center>
 <p>After that, we chose some of them to train 3 seeds as seed=0,1,2, then:</p>
-<img src="assets/image-20251024163553684.png" alt="image-20251024163553684" style="zoom: 67%;" />
+<div align=center><img src="assets/image-20251024163553684.png" width=600/></div>
+<center><font size=2>Multi-seed training comparison</font></center>
 <h2 id="other-paper-reading">Other Paper Reading
 </h2><p>Off-topic story — So last week I was totally slacking off when I suddenly saw an email from my advisor’s Zoom: “xxx invites you&hellip; at 11:30.” I thought maybe the meeting time had changed. But then I noticed the original 9:30 link was still active, not canceled.</p>
 <p>So on the meeting day, the theory slides in my PPT still weren’t done, and I figured I’d hop into the 9:30 call just to check—<em>you know, just in case they actually started then.</em>
@@ -1978,7 +1996,8 @@ $$<p>There’s also a <strong>GSN (Global-scale Novelty)</strong> metric, where 
 <p>The novelty of generative designs can be viewed from two perspectives: <strong>sequence novelty and physicochemical properties novelty.</strong> In our case, sequence and physicochemical properties (derived from sequence) novelty are important in RNA 3D inverse folding. Indeed, sequence features such as physicochemical properties play a crucial role in functional RNA design. For instance, it was reported that natural RNAs show privileged physicochemical property space which is related to their biological functions. Other sequence features like GC content are important properties related to developability of RNA molecules. Given the nature of one-to-many relationship between the targeted RNA structure and its possible sequences, the novelty and diversity of generated sequences are important considerations for improving physicochemical properties of the designed sequences.</p>
 </blockquote>
 <p>physicochemical properties space, evaluation,</p>
-<img src="assets/image-20250923234501726-1761295098390-2.png" alt="image-20250923234501726" style="zoom: 33%; display: block; margin: 0 auto;" />
+<div align=center><img src="assets/image-20250923234501726-1761295098390-2.png" width=600/></div>
+<center><font size=2>Physicochemical properties evaluation</font></center>
 <h3 id="beyond-rna-structure-alone-complex-aware-feature-fusion-for-tertiary-structure-based-rna-design">Beyond RNA Structure Alone: Complex-Aware Feature Fusion for Tertiary Structure-based RNA Design
 </h3><h4 id="abstract">Abstract
 </h4><ul>
@@ -2037,7 +2056,8 @@ $$<p>There’s also a <strong>GSN (Global-scale Novelty)</strong> metric, where 
 </ul>
 <p><strong>Ablation Studies</strong></p>
 <p>key components of  method, including the number of attention blocks in CAFormer, the fashion of filtering the protein representation, and the choices of protein representation model.</p>
-<img src="assets/image-20250924010453989-1761295098390-8.png" alt="image-20250924010453989" style="zoom:50%; display: block; margin: 0 auto;" />
+<div align=center><img src="assets/image-20250924010453989-1761295098390-8.png" width=600/></div>
+<center><font size=2>Ablation study results</font></center>
 <h3 id="ribodiffusion-tertiary-structure-based-rna-inverse-folding-with-generative-diffusion-models">RiboDiffusion: tertiary structure-based RNA inverse folding with generative diffusion models
 </h3><p><strong>Abstract:</strong></p>
 <ul>
@@ -2064,7 +2084,8 @@ $$<p>There’s also a <strong>GSN (Global-scale Novelty)</strong> metric, where 
 </li>
 </ul>
 <p><strong>&ndash; only 2D, without considering 3D structures of RNA</strong></p>
-<img src="assets/image-20250924100631702-1761295098390-9.png" alt="image-20250924100631702" style="zoom: 33%; display: block; margin: 0 auto;" />
+<div align=center><img src="assets/image-20250924100631702-1761295098390-9.png" width=600/></div>
+<center><font size=2>RiboDiffusion model overview</font></center>
 <p><strong>Methods:</strong></p>
 <p>Diffusion;</p>
 <p>Three-atom coarse-grained representation including the atom coordinates of C4’, C1’, N1 (pyrimidine) or N9 (purine) for every nucleotide;</p>
@@ -2122,7 +2143,8 @@ $$<p>There’s also a <strong>GSN (Global-scale Novelty)</strong> metric, where 
 <p>RL often yield noisy or unreliable outcomes in single optimization runs, (a) The number of unsolved sequences, (b) the sum of mean distances, <strong>(c) the sum of minimum distances to the target structure.</strong></p>
 </li>
 </ul>
-<img src="assets/image-20250924101020080-1761295098390-10.png" alt="image-20250924101020080" style="zoom:50%; display: block; margin: 0 auto;" />
+<div align=center><img src="assets/image-20250924101020080-1761295098390-10.png" width=600/></div>
+<center><font size=2>RL optimization metrics</font></center>
 <h3 id="rna-dcgen-dual-constrained-rna-sequence-generation-with-llm-attack"><strong>RNA-DCGen: Dual Constrained RNA Sequence</strong> Generation with LLM-Attack
 </h3><ul>
 <li>
@@ -2135,7 +2157,8 @@ $$<p>There’s also a <strong>GSN (Global-scale Novelty)</strong> metric, where 
 <p>Dual Constrained: on the sequence itself and on specified constraints.</p>
 </li>
 </ul>
-<img src="assets/image-20250924101257338-1761295098390-12.png" alt="image-20250924101257338" style="zoom: 33%; display: block; margin: 0 auto;" />
+<div align=center><img src="assets/image-20250924101257338-1761295098390-12.png" width=600/></div>
+<center><font size=2>RNA-DCGen framework</font></center>
 
 </section>
 
