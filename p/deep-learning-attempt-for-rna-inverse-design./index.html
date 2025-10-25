@@ -644,7 +644,7 @@
 <p>To solve my confuse, I test it with RNASolo Data set(manually), but it seemed that is not obvious.</p>
 <div align=center><img src="8.png" width=400/></div>
 <div align=center><img src="9.png" width=400/></div>
-<center><font size=2>RiboDiffusion模型的Recovery在对数坐标(上)与常数坐标(下)表示下随Sequence的变化</font></center>
+<center><font size=2>RiboDiffusion,Recovery in log(up) and normal(down) drops with Sequence</font></center>
 <p>We will follow the scripts as:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1806,7 +1806,6 @@
 </table></div>
 <p>We then compare the SCC，Recovery.</p>
 <div align=center><img src="18.png" width=600/></div>
-<center><font size=2>加了注意力的两个模型实际在表现上都比原版好，现在就要取舍了</font></center>
 <p>After that, we test grnade and multi-layer attention on 12000+data,</p>
 <div align=center><img src="17.png" width=600/></div>
 <center><font size=2>SCC improved</font></center>
@@ -1833,20 +1832,20 @@
 <h3 id="graph-mamba">Graph-Mamba
 </h3><h4 id="mamba">Mamba
 </h4><p>Different from RNN, the SSM(State Space Model) will &ldquo;remember&rdquo; the graph or text interactions better.</p>
-<div align=center><img src="assets/image-20251024161030234.png" width=600/></div>
+<div align=center><img src="assets/image-20251024161030234.png" width=400/></div>
 <center><font size=2>SSM model structure</font></center>
-<div align=center><img src="assets/image-20251024161045596.png" width=600/></div>
+<div align=center><img src="assets/image-20251024161045596.png" width=400/></div>
 <center><font size=2>SSM architecture details</font></center>
 <p>For it promising performance,</p>
-<div align=center><img src="assets/image-20251024161132071.png" width=600/></div>
+<div align=center><img src="assets/image-20251024161132071.png" width=400/></div>
 <center><font size=2>SSM performance comparison</font></center>
 <p>SSMs have rich theoretical properties but suffer from high computational cost and numerical instability. So HiPPO(High-order Polynomial Projection Operator) is proposed to optimize the SSM, as follows,</p>
-<div align=center><img src="assets/image-20251024161322086.png" width=600/></div>
+<div align=center><img src="assets/image-20251024161322086.png" width=400/></div>
 <center><font size=2>HiPPO framework</font></center>
-<div align=center><img src="assets/image-20251024161343746.png" width=600/></div>
+<div align=center><img src="assets/image-20251024161343746.png" width=200/></div>
 <center><font size=2>HiPPO optimization details</font></center>
 <p>Notably, it is developed into the S4 model, which shows its strong capability to capture long-range dependencies.</p>
-<div align=center><img src="assets/image-20251024161334191.png" width=600/></div>
+<div align=center><img src="assets/image-20251024161334191.png" width=400/></div>
 <center><font size=2>S4 model capabilities</font></center>
 <h4 id="graph-mamba-towards-long-range-graph-sequence-modeling-withselective-state-spaces">Graph-Mamba: Towards Long-Range Graph Sequence Modeling withSelective State Spaces
 </h4><p>From the <strong>Graph-Mamba</strong>, we will know that,</p>
@@ -1870,15 +1869,15 @@
 <p>Optimization: Node Prioritization; Permutation-based Training.</p>
 </li>
 </ul>
-<div align=center><img src="assets/image-20251024153623567.png" width=600/></div>
+<div align=center><img src="assets/image-20251024153623567.png" width=400/></div>
 <center><font size=2>Graph-Mamba architecture</font></center>
 <p>In the same way, we just follow the algorithm and replace the <code>gvpcov</code> layer to our <code>graphgpsMamba</code>.</p>
-<div align=center><img src="assets/image-20251024154038508.png" width=600/></div>
+<div align=center><img src="assets/image-20251024154038508.png" width=300/></div>
 <center><font size=2>Algorithm implementation</font></center>
-<div align=center><img src="assets/image-20251024154100968.png" width=600/></div>
+<div align=center><img src="assets/image-20251024154100968.png" width=300/></div>
 <center><font size=2>GatedGCN and GraphGPS integration</font></center>
 <p>The code will load GatedGCN as MPNN and combine it with graphGPS then add mamba block. However, graphGPS, or more specifically, gatedGCN, is not proposed to model our RNA molecules. So in our test, it performs worse than baseline.</p>
-<div align=center><img src="assets/image-20251024153639628.png" width=600/></div>
+<div align=center><img src="assets/image-20251024153639628.png" width=400/></div>
 <center><font size=2>Baseline comparison results</font></center>
 <h3 id="long-short-transformer-and-graph-long-short-transformer">Long-Short Transformer and Graph Long-Short Transformer
 </h3><p>We will learn from the article:</p>
@@ -1898,31 +1897,31 @@
 <p>Aggregating Long-range and Short-term Attentions&amp;DualLN</p>
 </li>
 </ul>
-<div align=center><img src="assets/image-20251024162239002.png" width=600/></div>
+<div align=center><img src="assets/image-20251024162239002.png" width=400/></div>
 <center><font size=2>Long-Short Transformer architecture</font></center>
 <p>We then develop it into Long-short Graph Transformer, using <code>MultiGVPConv</code> for message passing, and sliding window for short attention, dynamic projection for long range. In the code, we mixed the edge features to node and processed the node scalar features, because the author&rsquo; s model from long-short transformer is 1D information for sentence modeling.</p>
-<div align=center><img src="assets/image-20251024162251654.png" width=600/></div>
+<div align=center><img src="assets/image-20251024162251654.png" width=400/></div>
 <center><font size=2>Long-short Graph Transformer implementation</font></center>
-<div align=center><img src="assets/image-20251024162257996.png" width=600/></div>
+<div align=center><img src="assets/image-20251024162257996.png" width=400/></div>
 <center><font size=2>Feature processing pipeline</font></center>
 <p>Unluckily, although it outperformed than any others in 200+ nts long range rna modeling, the short and medium range would drop down.</p>
 <h3 id="gat-gvp-long-short-graph-transformer">GAT-GVP long-short graph transformer
 </h3><p>According to Graph Attention Networks, we changed the short range to the GAT to capture the neighbor interactions, maintain the 3D information.</p>
-<div align=center><img src="assets/image-20251024162817129.png" width=600/></div>
+<div align=center><img src="assets/image-20251024162817129.png" width=400/></div>
 <center><font size=2>GAT-GVP architecture</font></center>
-<div align=center><img src="assets/image-20251024162828711.png" width=600/></div>
+<div align=center><img src="assets/image-20251024162828711.png" width=300/></div>
 <center><font size=2>GAT neighbor interaction mechanism</font></center>
 <h3 id="experiments">Experiments
 </h3><h4 id="learning-rate">Learning rate
-</h4><div align=center><img src="assets/image-20251024162348404.png" width=600/></div>
+</h4><div align=center><img src="assets/image-20251024162348404.png" width=400/></div>
 <center><font size=2>Learning rate comparison</font></center>
 <p>We use our graph transformer which just adds a transformer into the layer, training with different lr, and finds out that when lr=0.0002, it will be the best.</p>
 <h4 id="comparison">Comparison
 </h4><p>We trained with seed0, and,</p>
-<div align=center><img src="assets/image-20251024163430577.png" width=600/></div>
+<div align=center><img src="assets/image-20251024163430577.png" width=500/></div>
 <center><font size=2>Training results with seed0</font></center>
 <p>After that, we chose some of them to train 3 seeds as seed=0,1,2, then:</p>
-<div align=center><img src="assets/image-20251024163553684.png" width=600/></div>
+<div align=center><img src="assets/image-20251024163553684.png" width=500/></div>
 <center><font size=2>Multi-seed training comparison</font></center>
 <h2 id="other-paper-reading">Other Paper Reading
 </h2><p>Off-topic story — So last week I was totally slacking off when I suddenly saw an email from my advisor’s Zoom: “xxx invites you&hellip; at 11:30.” I thought maybe the meeting time had changed. But then I noticed the original 9:30 link was still active, not canceled.</p>
@@ -1959,12 +1958,12 @@ And sure enough, I heard: <em>“Alright, let’s get started.”</em></p>
 <p>compared to Euclidean space, a hyperbolic distance better captures molecular differences and improve performance in small molecule generation tasks</p>
 </blockquote>
 <p>In other words, this HB metric captures structural features better than the Euclidean one — or you could say it reflects the more <em>subtle structural differences</em> more effectively. The authors illustrate this with the following figure:</p>
-<img src="assets/image-20250923222419058-1761295098389-1.png" alt="image-20250923222419058" style="zoom:50%; display: block; margin: 0 auto;" />
+<img src="assets/image-20250923222419058-1761295098389-1.png" alt="image-20250923222419058" style="zoom: 33%; display: block; margin: 0px auto;" />
 <p>We can mainly focus on panels A and D. Panel A shows a schematic of the transformation, while panel D visualizes how the RNA structures are distributed in the HB space. Simply put, different chains (or backbones) are separated more clearly there — which means the features can be captured more effectively.</p>
 <h4 id="about-the-model">about the model
 </h4><p><strong>hyperbolic equivariant graph neural networks</strong> (HEGNNs) to <strong>parameterize the discrete diffusion model</strong>, and effectively capture the 3D structural characteristics by <strong>incorporating RNA’s geometric features and topological properties</strong> into the generation process.</p>
 <p>framework：</p>
-<img src="assets/image-20250923230102547-1761295098390-4.png" alt="image-20250923230102547" style="zoom: 25%; display: block; margin: 0 auto;" />
+<img src="assets/image-20250923230102547-1761295098390-4.png" alt="image-20250923230102547" style="zoom: 25%; display: block; margin: 0px auto;" />
 <h4 id="materials-and-methods">MATERIALS AND METHODS
 </h4><p>I would just understand the <strong>Hyperbolic Equivariant Graph Denoising Network</strong>, Normally, models tend to lose some information when dealing with this kind of 3D data.</p>
 <p>So the author utilizes <strong>SE(3) equivariant neural layers</strong> from Equivariant Graph Neural Networks (EGNN).49 This approach allows the model to preserve SO(3) rotational equivariance and E(3) translational invariance when updating the representations of nodes and edges, thereby retaining geometric information and ensuring the robustness and effectiveness of the hidden representations, to enable the EGNN network to update edge.其实就是加了个层。</p>
@@ -1996,7 +1995,7 @@ $$<p>There’s also a <strong>GSN (Global-scale Novelty)</strong> metric, where 
 <p>The novelty of generative designs can be viewed from two perspectives: <strong>sequence novelty and physicochemical properties novelty.</strong> In our case, sequence and physicochemical properties (derived from sequence) novelty are important in RNA 3D inverse folding. Indeed, sequence features such as physicochemical properties play a crucial role in functional RNA design. For instance, it was reported that natural RNAs show privileged physicochemical property space which is related to their biological functions. Other sequence features like GC content are important properties related to developability of RNA molecules. Given the nature of one-to-many relationship between the targeted RNA structure and its possible sequences, the novelty and diversity of generated sequences are important considerations for improving physicochemical properties of the designed sequences.</p>
 </blockquote>
 <p>physicochemical properties space, evaluation,</p>
-<div align=center><img src="assets/image-20250923234501726-1761295098390-2.png" width=600/></div>
+<div align=center><img src="assets/image-20250923234501726-1761295098390-2.png" width=400/></div>
 <center><font size=2>Physicochemical properties evaluation</font></center>
 <h3 id="beyond-rna-structure-alone-complex-aware-feature-fusion-for-tertiary-structure-based-rna-design">Beyond RNA Structure Alone: Complex-Aware Feature Fusion for Tertiary Structure-based RNA Design
 </h3><h4 id="abstract">Abstract
@@ -2022,7 +2021,7 @@ $$<p>There’s also a <strong>GSN (Global-scale Novelty)</strong> metric, where 
 <li>different from protein folding which roughly follows Anfinsen’s rule, RNAs are highly flexible and rely on interactions with proteins, DNA, and other biomolecules to achieve folding.</li>
 <li>RNAs may adopt various conformations by interacting with distinct macromolecules at different stages of functioning. At different stages, they also bind with macromolecules.</li>
 </ul>
-<img src="assets/image-20250924001621731-1761295098390-3.png" alt="image-20250924001621731" style="zoom:50%; display: block; margin: 0 auto;" />
+<img src="assets/image-20250924001621731-1761295098390-3.png" alt="image-20250924001621731" style="zoom: 33%; display: block; margin: 0px auto;" />
 <p>This paper considers both RNA structural features and protein–RNA interactions to generate sequences comprehensively.</p>
 <p>The outline, as shown in Figure 1, includes a <strong>pre-trained protein language model (PLM)</strong> to handle proteins, and a <strong>Complex-Aware Transformer (CAFormer)</strong> to integrate RNA and protein features. They use <strong>distance-aware filtering</strong> to select relevant regions while ignoring unrelated areas. This setup allows the model to capture the context of protein–RNA complexes and focus on the interaction regions within the complex.</p>
 <p>Overall, the authors iteratively screen the generated RNA sequences: candidate sequences are first filtered based on predicted affinity scores, and then structural compatibility is validated using multiple folding models.</p>
@@ -2034,12 +2033,12 @@ $$<p>There’s also a <strong>GSN (Global-scale Novelty)</strong> metric, where 
 <p>RNA design aims to generate sequences that fold into <strong>predefined structures.</strong> Early methods focused on <strong>secondary structure optimization</strong>, using <strong>thermodynamic parameters</strong> and <strong>energy minimization</strong>. Tools like <strong>RNAfold</strong> predict RNA secondary structures based on the <strong>minimum free energy principle</strong>. As understanding of RNA structure has advanced, focus has shifted to <strong>complex tertiary structure-based design</strong> due to RNA’s high conformational flexibility, which challenges traditional thermodynamic methods. Recent deep learning approaches for RNA tertiary structure design include <strong>gRNAde, which utilizes geometric deep learning and graph neural networks to generate RNA sequences</strong>; <strong>RiboDiffusion</strong>, a diffusion model for inverse folding leveraging RNA backbone structures; <strong>RDesign</strong>, which employs a data-efficient learning framework with contrastive learning for tertiary structures; and <strong>Rhodesign</strong>, focusing on RNA aptamer design by guiding sequence generation through structural predictions.</p>
 </blockquote>
 <h4 id="methods">Methods
-</h4><img src="assets/image-20250924003914813-1761295098390-6.png" alt="image-20250924003914813" style="zoom: 33%; display: block; margin: 0 auto;" />
+</h4><img src="assets/image-20250924003914813-1761295098390-6.png" alt="image-20250924003914813" style="zoom: 25%; display: block; margin: 0px auto;" />
 <p>It’s actually quite comprehensive. Regarding that <strong>filter</strong>, since a single protein can bind RNA through multiple sites (different conformations), and a single RNA can also interact with different proteins, the authors provide the following figure to illustrate this:</p>
-<img src="assets/image-20250924004136830-1761295098390-7.png" alt="image-20250924004136830" style="zoom:50%; display: block; margin: 0 auto;" />
+<img src="assets/image-20250924004136830-1761295098390-7.png" alt="image-20250924004136830" style="zoom: 33%; display: block; margin: 0px auto;" />
 <p><strong>COMPLEX-AWARE ATTENTION BLOCK</strong></p>
 <p>For this part, the authors first concatenate the RNA and the filtered protein information, and then use <strong>N multi-head self-attention layers</strong> to enhance the model’s ability to capture contextual interactions.</p>
-<img src="assets/image-20250924004411039-1761295098390-5.png" alt="image-20250924004411039" style="zoom:33%; display: block; margin: 0 auto;" />
+<img src="assets/image-20250924004411039-1761295098390-5.png" alt="image-20250924004411039" style="zoom: 25%; display: block; margin: 0px auto;" />
 <p>After that, they use a <strong>Transformer-based decoder</strong>, similar to RhoDesign, to generate RNA sequences. The decoding is framed as a <strong>next-token prediction task</strong>, where the decoder predicts the next nucleotide based on the previously generated ones. During training, the model is optimized using <strong>cross-entropy loss</strong>.</p>
 <p><strong>High-Affinity RNA Design Framework</strong></p>
 <ul>
@@ -2056,7 +2055,7 @@ $$<p>There’s also a <strong>GSN (Global-scale Novelty)</strong> metric, where 
 </ul>
 <p><strong>Ablation Studies</strong></p>
 <p>key components of  method, including the number of attention blocks in CAFormer, the fashion of filtering the protein representation, and the choices of protein representation model.</p>
-<div align=center><img src="assets/image-20250924010453989-1761295098390-8.png" width=600/></div>
+<div align=center><img src="assets/image-20250924010453989-1761295098390-8.png" width=400/></div>
 <center><font size=2>Ablation study results</font></center>
 <h3 id="ribodiffusion-tertiary-structure-based-rna-inverse-folding-with-generative-diffusion-models">RiboDiffusion: tertiary structure-based RNA inverse folding with generative diffusion models
 </h3><p><strong>Abstract:</strong></p>
@@ -2084,7 +2083,7 @@ $$<p>There’s also a <strong>GSN (Global-scale Novelty)</strong> metric, where 
 </li>
 </ul>
 <p><strong>&ndash; only 2D, without considering 3D structures of RNA</strong></p>
-<div align=center><img src="assets/image-20250924100631702-1761295098390-9.png" width=600/></div>
+<div align=center><img src="assets/image-20250924100631702-1761295098390-9.png" width=400/></div>
 <center><font size=2>RiboDiffusion model overview</font></center>
 <p><strong>Methods:</strong></p>
 <p>Diffusion;</p>
@@ -2143,7 +2142,7 @@ $$<p>There’s also a <strong>GSN (Global-scale Novelty)</strong> metric, where 
 <p>RL often yield noisy or unreliable outcomes in single optimization runs, (a) The number of unsolved sequences, (b) the sum of mean distances, <strong>(c) the sum of minimum distances to the target structure.</strong></p>
 </li>
 </ul>
-<div align=center><img src="assets/image-20250924101020080-1761295098390-10.png" width=600/></div>
+<div align=center><img src="assets/image-20250924101020080-1761295098390-10.png" width=400/></div>
 <center><font size=2>RL optimization metrics</font></center>
 <h3 id="rna-dcgen-dual-constrained-rna-sequence-generation-with-llm-attack"><strong>RNA-DCGen: Dual Constrained RNA Sequence</strong> Generation with LLM-Attack
 </h3><ul>
@@ -2157,7 +2156,7 @@ $$<p>There’s also a <strong>GSN (Global-scale Novelty)</strong> metric, where 
 <p>Dual Constrained: on the sequence itself and on specified constraints.</p>
 </li>
 </ul>
-<div align=center><img src="assets/image-20250924101257338-1761295098390-12.png" width=600/></div>
+<div align=center><img src="assets/image-20250924101257338-1761295098390-12.png" width=400/></div>
 <center><font size=2>RNA-DCGen framework</font></center>
 
 </section>
